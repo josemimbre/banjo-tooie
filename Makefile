@@ -8,7 +8,26 @@ ROM                  := $(BUILD_ROOT)/banjotooie.z64
 BASEROM              := baserom.us.z64
 ULTRALIB_VERSION     := J
 ULTRALIB_TARGET      := libultra_rom
-PYTHON3_BIN          ?= python3
+PYTHON3_BIN          ?= $(if $(wildcard .venv/bin/python3),.venv/bin/python3,python3)
+
+# Output: one short coloured line per step by default; `make V=1` prints full commands.
+# Colours are off when stderr is not a terminal, or with `make NO_COLOR=1`.
+V ?= 0
+ifeq ($(V),0)
+  Q := @
+endif
+ifeq ($(NO_COLOR)$(shell test -t 2 || echo nocolor),)
+  C_RESET := \033[0m
+  C_CC    := \033[36m
+  C_AS    := \033[34m
+  C_LD    := \033[1;35m
+  C_GEN   := \033[33m
+  C_ROM   := \033[1;33m
+  C_OK    := \033[1;32m
+  C_FAIL  := \033[1;31m
+endif
+# $(call print,TAG,text): print a "TAG text" line (only when V=0)
+print = $(if $(Q),@printf '  $(C_$(1))%-7s$(C_RESET) %s\n' '$(1)' '$(2)')
 
 SRC_ROOT     := src
 ASM_ROOT     := asm
@@ -62,72 +81,94 @@ OPT_LEVEL := -O2
 CFLAGS    := -w -c -Wab,-r4300_mul -non_shared -G 0 -Xcpluscomm $(OPT_LEVEL) -mips2 -woff 807
 CPPFLAGS  := -I include -I $(ULTRALIB_DIR)/include -I src -DBUILD_VERSION=VERSION_$(ULTRALIB_VERSION) -D_FINALROM -DF3DEX_GBI_2
 ASFLAGS   := -w -march=vr4300 -mabi=32 -mgp32 -mfp32 -mips3 -mno-abicalls -G0 -fno-pic -gdwarf -c -x assembler-with-cpp -D_LANGUAGE_ASSEMBLY
-LDFLAGS   := -nostdlib -T undefined_syms.us.txt --build-id=none --emit-relocs --whole-archive --no-warn-mismatch
+LDFLAGS   := --no-warn-rwx-segments -nostdlib -T undefined_syms.us.txt --build-id=none --emit-relocs --whole-archive --no-warn-mismatch
 BINOFLAGS := -I binary -O elf32-tradbigmips
 Z64OFLAGS := -O binary --gap-fill=0x00
 
 check: $(ROM)
-	@diff $(DECOMPRESSED_BASEROM) $(UNCOMPRESSED_ROM) && printf "OK\n"
+	@if cmp -s $(DECOMPRESSED_BASEROM) $(UNCOMPRESSED_ROM); then \
+		printf '$(C_OK)OK$(C_RESET)    $(UNCOMPRESSED_ROM) matches $(DECOMPRESSED_BASEROM)\n'; \
+	else \
+		printf '$(C_FAIL)FAIL$(C_RESET)  $(UNCOMPRESSED_ROM) differs from $(DECOMPRESSED_BASEROM)\n'; \
+		printf '      find the function with: $(PYTHON3_BIN) tools/check_func.py --file src/<file>.c\n'; \
+		exit 1; \
+	fi
 
 $(UNCOMPRESSED_ROM): $(ELF)
-	$(OBJCOPY) $(Z64OFLAGS) $< $@
+	$(call print,ROM,$@)
+	$(Q)$(OBJCOPY) $(Z64OFLAGS) $< $@
 
 $(ROM) : $(UNCOMPRESSED_ROM) $(ELF)
-	tools/rom_compressor $(UNCOMPRESSED_ROM) $(ELF) $(ROM) $(BASEROM) $(DECOMPRESSED_BASEROM)
-	tools/n64crc $@ > /dev/null
+	$(call print,ROM,$@)
+	$(Q)tools/rom_compressor $(UNCOMPRESSED_ROM) $(ELF) $(ROM) $(BASEROM) $(DECOMPRESSED_BASEROM)
+	$(Q)tools/n64crc $@ > /dev/null
 
 $(PRELIM_LD_SCRIPT): $(LD_SCRIPT)
-	sed 's/$(subst /,\/,$(BUILD_ROOT))\/assets\/overlay.*$$//' $< > $@
+	$(call print,GEN,$@)
+	$(Q)sed 's/$(subst /,\/,$(BUILD_ROOT))\/assets\/overlay.*$$//' $< > $@
 
 $(PRELIM_ELF): $(ALL_OBJS) $(PRELIM_LD_SCRIPT) $(OVERLAY_SYSCALLS_OBJ) $(ULTRALIB_CORE) $(ULTRALIB_BOOT)
-	$(LD) -T $(PRELIM_LD_SCRIPT) -Map $(@:.elf=.map) $(LDFLAGS) $(ULTRALIB_CORE) $(ULTRALIB_BOOT) -o $@
+	$(call print,LD,$@)
+	$(Q)$(LD) -T $(PRELIM_LD_SCRIPT) -Map $(@:.elf=.map) $(LDFLAGS) $(ULTRALIB_CORE) $(ULTRALIB_BOOT) -o $@
 
 $(ELF): $(ALL_OBJS) $(LD_SCRIPT) $(OVERLAY_SYSCALLS_OBJ) $(OVERLAY_TABLE_OBJ) $(OVERLAY_HEADER_OBJS) $(ULTRALIB_CORE) $(ULTRALIB_BOOT)
-	$(LD) -T $(LD_SCRIPT) -Map $(@:.elf=.map) $(LDFLAGS) $(ULTRALIB_CORE) $(ULTRALIB_BOOT) -o $@
+	$(call print,LD,$@)
+	$(Q)$(LD) -T $(LD_SCRIPT) -Map $(@:.elf=.map) $(LDFLAGS) $(ULTRALIB_CORE) $(ULTRALIB_BOOT) -o $@
 
 $(ASM_PROC_C_OBJS): $(BUILD_ROOT)/%.c.o: %.c | $(C_BUILD_DIRS)
-	$(ASM_PROC) $(OPT_LEVEL) $< > $(BUILD_ROOT)/$<
-	$(CC) $(CFLAGS) $(CPPFLAGS) -c $(BUILD_ROOT)/$< -o $@
-	$(ASM_PROC) $(OPT_LEVEL) $< --post-process $@ --assembler "$(AS) $(ASFLAGS) $(CPPFLAGS)" --asm-prelude include/prelude.inc
+	$(call print,CC,$< (asm-processor))
+	$(Q)$(ASM_PROC) $(OPT_LEVEL) $< > $(BUILD_ROOT)/$<
+	$(Q)$(CC) $(CFLAGS) $(CPPFLAGS) -c $(BUILD_ROOT)/$< -o $@
+	$(Q)$(ASM_PROC) $(OPT_LEVEL) $< --post-process $@ --assembler "$(AS) $(ASFLAGS) $(CPPFLAGS)" --asm-prelude include/prelude.inc
 
 $(PURE_C_OBJS): $(BUILD_ROOT)/%.c.o: %.c | $(C_BUILD_DIRS)
-	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+	$(call print,CC,$<)
+	$(Q)$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
 $(S_OBJS): $(BUILD_ROOT)/%.s.o: %.s | $(S_BUILD_DIRS)
-	$(AS) $(ASFLAGS) $(CPPFLAGS) -c $< -o $@
+	$(call print,AS,$<)
+	$(Q)$(AS) $(ASFLAGS) $(CPPFLAGS) -c $< -o $@
 
 $(HS_OBJS): $(BUILD_ROOT)/%.s.o: %.s | $(HS_BUILD_DIRS)
-	$(AS) $(ASFLAGS) $(CPPFLAGS) -c $< -o $@
+	$(call print,AS,$<)
+	$(Q)$(AS) $(ASFLAGS) $(CPPFLAGS) -c $< -o $@
 
 $(OVERLAY_HEADER_OBJS): $(BUILD_ROOT)/%.bin.o: $(BUILD_ROOT)/%.s
-	$(AS) $(ASFLAGS) $(CPPFLAGS) -c $< -o $@
+	$(call print,AS,$<)
+	$(Q)$(AS) $(ASFLAGS) $(CPPFLAGS) -c $< -o $@
 
 $(OVERLAY_TABLE_OBJ): $(OVERLAY_TABLE_SRC)
-	$(AS) $(ASFLAGS) $(CPPFLAGS) -c $< -o $@
+	$(call print,AS,$<)
+	$(Q)$(AS) $(ASFLAGS) $(CPPFLAGS) -c $< -o $@
 
 $(OVERLAY_HEADER_SRCS) $(OVERLAY_TABLE_SRC) &: $(PRELIM_ELF)
-	tools/overlay_processor $(PRELIM_ELF) $(BUILD_ROOT)/assets > /dev/null
+	$(call print,GEN,overlay headers and table)
+	$(Q)tools/overlay_processor $(PRELIM_ELF) $(BUILD_ROOT)/assets > /dev/null
 
 $(OVERLAY_SYSCALLS_OBJ): $(OVERLAY_SYSCALLS_SRC)
-	$(AS) $(ASFLAGS) $(CPPFLAGS) -c $< -o $@
+	$(call print,AS,$<)
+	$(Q)$(AS) $(ASFLAGS) $(CPPFLAGS) -c $< -o $@
 
 $(OVERLAY_SYSCALLS_SRC): overlays.us.toml
-	tools/syscall_builder $(BUILD_ROOT)/assets
+	$(call print,GEN,$@)
+	$(Q)tools/syscall_builder $(BUILD_ROOT)/assets
 
 $(BIN_OBJS): $(BUILD_ROOT)/%.bin.o: %.bin | $(BIN_BUILD_DIRS)
-	$(OBJCOPY) $(BINOFLAGS) $< $@
+	$(call print,BIN,$<)
+	$(Q)$(OBJCOPY) $(BINOFLAGS) $< $@
 
 $(ULTRALIB_LIB):
 	$(MAKE) -C $(ULTRALIB_DIR) VERSION=$(ULTRALIB_VERSION) TARGET=$(ULTRALIB_TARGET) NON_MATCHING=1
 
 $(ULTRALIB_CORE): $(ULTRALIB_LIB)
-	cp $< $@
+	$(Q)cp $< $@
 
 $(ULTRALIB_BOOT): $(ULTRALIB_CORE)
-	$(OBJCOPY) --prefix-symbols boot_ $< $@
+	$(call print,GEN,$@)
+	$(Q)$(OBJCOPY) --prefix-symbols boot_ $< $@
 
 $(BUILD_DIRS):
-	mkdir -p $@
+	$(Q)mkdir -p $@
 
 clean:
 	find $(BUILD_ROOT) -type f -not -name '*.asmproc.d' -not -name '*.eeprom' -delete
