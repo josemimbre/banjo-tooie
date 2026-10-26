@@ -85,14 +85,23 @@ LDFLAGS   := --no-warn-rwx-segments -nostdlib -T undefined_syms.us.txt --build-i
 BINOFLAGS := -I binary -O elf32-tradbigmips
 Z64OFLAGS := -O binary --gap-fill=0x00
 
+# Checks the uncompressed ROM (code and data) and the final compressed ROM (packaging).
 check: $(ROM)
-	@if cmp -s $(DECOMPRESSED_BASEROM) $(UNCOMPRESSED_ROM); then \
+	@fail=0; \
+	if cmp -s $(DECOMPRESSED_BASEROM) $(UNCOMPRESSED_ROM); then \
 		printf '$(C_OK)OK$(C_RESET)    $(UNCOMPRESSED_ROM) matches $(DECOMPRESSED_BASEROM)\n'; \
 	else \
 		printf '$(C_FAIL)FAIL$(C_RESET)  $(UNCOMPRESSED_ROM) differs from $(DECOMPRESSED_BASEROM)\n'; \
 		printf '      find the function with: $(PYTHON3_BIN) tools/check_func.py --file src/<file>.c\n'; \
-		exit 1; \
-	fi
+		fail=1; \
+	fi; \
+	if msg=$$($(PYTHON3_BIN) tools/check_rom.py $(ROM) $(BASEROM)); then \
+		printf '$(C_OK)OK$(C_RESET)    %s\n' "$$msg"; \
+	else \
+		printf '$(C_FAIL)FAIL$(C_RESET)  %s\n' "$$msg"; \
+		fail=1; \
+	fi; \
+	exit $$fail
 
 $(UNCOMPRESSED_ROM): $(ELF)
 	$(call print,ROM,$@)
