@@ -121,6 +121,9 @@ check: $(ROM) ## build and compare both ROMs with the originals
 
 ##@ Decompiling
 
+progress: $(ELF) ## progress per segment and overlay group [A='--all --html']
+	@$(PYTHON3_BIN) tools/progress_report.py $(A)
+
 func: $(ELF) ## check functions byte by byte: A='func_800944E0' or A='--file src/x.c'
 	@test -n '$(A)' || { echo "usage: make func A='func_800944E0 ...' or A='--file src/core2/1ECA640.c'"; exit 2; }
 	@$(PYTHON3_BIN) tools/check_func.py $(A)
@@ -226,7 +229,7 @@ MAKEFLAGS += -r
 .SUFFIXES:
 
 # Phony targets
-.PHONY: help build check func setup clean distclean
+.PHONY: help build check progress func setup clean distclean
 
 # Debug variable print target
 print-% : ; $(info $* is a $(flavor $*) variable set to [$($*)]) @true
