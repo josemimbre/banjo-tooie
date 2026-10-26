@@ -9,14 +9,19 @@ For each segment (boot, core1, core2) and each overlay group
   code    bytes of .text in functions that are done (written in C, no .s left in
           asm/nonmatchings), out of all .text bytes
   funcs   functions that are done, out of all functions
-  named   functions with a real name instead of func_XXXXXXXX
-  data    bytes of .data + .rodata defined in C files, out of all of it
-          (the rest is still in asm/data/*.s)
+  named   functions with a real name, not func_XXXXXXXX or the generic
+          <overlay>_entrypoint_N that overlays.us.toml gives exported functions
+  data    bytes of .data + .rodata that are done: in C files, minus the
+          .rodata that GLOBAL_ASM .s files still bring into them (asm-processor
+          puts it in the C object); the rest is in asm/data/*.s
   bss     bytes of .bss declared in C files, out of all of it
 
-libultra (linked from an archive, fully matched) and hand-written asm (hasm
+libultra (linked from an archive, fully matched), the RSP microcode (binaries
+in asm/data/core1) and hand-written asm (hasm
 segments: whole files in asm/, outside nonmatchings) count as done, as in
-tools/progress.py.
+tools/progress.py. The 8-byte _<overlay>_entrypoint_N jump stubs that
+tools/syscall_builder generates (asm/core2/overlay_syscalls.s) count in code
+bytes, as in tools/progress.py, but not as functions.
 
 The assets (the file table at assets_ROM_START: models, animations, ...) are
 listed by type with their share of the ROM; they are game data, not code, so
@@ -40,7 +45,11 @@ import mapfile_parser
 
 ROOT = Path(__file__).resolve().parent.parent
 NONMATCHINGS = ROOT / "asm" / "nonmatchings"
-UNNAMED_RE = re.compile(r"^func_[0-9A-Fa-f]{8}(_\w+)?$")
+UNNAMED_RE = re.compile(r"^func_[0-9A-Fa-f]{8}(_\w+)?$|^\w+_entrypoint_\d+$")
+MICROCODE = {"n_aspMain", "rspboot", "gspF3DEX2", "gspL3DEX2"}
+STUB_RE = re.compile(r"^_\w+_entrypoint_\d+$")
+# One data line of a splat .s: "/* ROM VRAM BYTES */" (or "/* BYTES */" after an .asciz)
+DATA_COMMENT_RE = re.compile(r"^\s*/\*\s*([0-9A-Fa-f ]+?)\s*\*/")
 SEGMENTS = ["boot", "core1", "core2"]
 # What an overlay group holds, where it is clear from the names in it.
 NOTES = {"ba": "player systems", "bs": "player states (moves)", "ch": "characters and objects",
@@ -90,8 +99,13 @@ def group_of(obj_path, version, data=False):
 
 
 def from_c(obj_path):
+    """True for data that is done: in a .c file, in libultra, or RSP microcode
+    (Nintendo binaries, like libultra). .s files in src/ (the core*bss*.s .bss
+    declarations) are not done."""
     parts = obj_path.parts
-    return "src" in parts[:3] or any(p.startswith("libultra") for p in parts[:3])
+    return (("src" in parts[:3] and obj_path.name.endswith(".c.o"))
+            or any(p.startswith("libultra") for p in parts[:3])
+            or obj_path.name.split(".")[0] in MICROCODE)
 
 
 def collect(map_path, version):
@@ -112,11 +126,13 @@ def collect(map_path, version):
                     continue
                 done = rel is None or hand_written or not (NONMATCHINGS / rel / f"{sym.name}.s").exists()
                 stats.code += size
-                stats.funcs += 1
-                stats.named += not UNNAMED_RE.match(sym.name)
                 if done:
                     stats.code_done += size
-                    stats.funcs_done += 1
+                if STUB_RE.match(sym.name):
+                    continue
+                stats.funcs += 1
+                stats.named += not UNNAMED_RE.match(sym.name)
+                stats.funcs_done += done
 
     for section, field in ((".data", "data"), (".rodata", "data"), (".bss", "bss")):
         for segment in mapfile.filterBySectionType(section):
@@ -129,7 +145,33 @@ def collect(map_path, version):
                 setattr(stats, field, getattr(stats, field) + file.size)
                 if from_c(path):
                     setattr(stats, field + "_done", getattr(stats, field + "_done") + file.size)
+
+    for s_file in NONMATCHINGS.rglob("*.s"):
+        pending = rodata_size(s_file)
+        if pending:
+            rel = s_file.parent.relative_to(NONMATCHINGS)
+            key, _ = group_of(Path("src") / rel.with_suffix(".c.o"), version)
+            if key in groups:
+                groups[key].data_done -= pending
     return groups
+
+
+def rodata_size(s_file):
+    """Bytes in the .rodata / .late_rodata sections of a splat .s file."""
+    total, in_rodata = 0, False
+    for line in s_file.read_text(encoding="latin1").splitlines():
+        stripped = line.strip()
+        if stripped.startswith(".section"):
+            in_rodata = "rodata" in stripped
+            continue
+        if in_rodata:
+            m = DATA_COMMENT_RE.match(line)
+            if m:
+                tokens = m.group(1).split()
+                # "ROM VRAM BYTES" or "BYTES" (the bytes of the .asciz above); "ROM VRAM" has none
+                if len(tokens) in (1, 3):
+                    total += len(tokens[-1]) // 2
+    return total
 
 
 def assets(rom):
