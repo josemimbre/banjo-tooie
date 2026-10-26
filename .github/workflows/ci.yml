@@ -59,7 +59,7 @@ jobs:
         run: make setup -j $(nproc)
 
       - name: Build Banjo-Tooie
-        run: make -j $(nproc)
+        run: make build -j $(nproc)
 
       - name: Print progress
         run: python3 tools/progress.py --version "$VERSION"
