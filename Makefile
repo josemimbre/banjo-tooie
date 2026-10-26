@@ -18,6 +18,7 @@ ifeq ($(V),0)
 endif
 ifeq ($(NO_COLOR)$(shell test -t 2 || echo nocolor),)
   C_RESET := \033[0m
+  C_BOLD  := \033[1m
   C_CC    := \033[36m
   C_AS    := \033[34m
   C_LD    := \033[1;35m
@@ -85,8 +86,23 @@ LDFLAGS   := --no-warn-rwx-segments -nostdlib -T undefined_syms.us.txt --build-i
 BINOFLAGS := -I binary -O elf32-tradbigmips
 Z64OFLAGS := -O binary --gap-fill=0x00
 
+# Plain `make` lists the targets. Each `target: ## text` line and `##@ Section`
+# line below shows up in it.
+.DEFAULT_GOAL := help
+
+help: ## list the targets
+	@printf '$(C_BOLD)Banjo-Tooie decomp$(C_RESET)\n'
+	@awk 'BEGIN {FS = ":.*## "} \
+		/^##@/ {printf "\n$(C_BOLD)%s$(C_RESET)\n", substr($$0, 5)} \
+		/^[a-z][a-z-]*:.*## / {printf "  make %-10s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
+	@printf '\n  V=1 shows full commands, NO_COLOR=1 turns colours off, -j$$(nproc) builds in parallel\n'
+
+##@ Build
+
+build: $(ROM) ## build build/us/banjotooie.z64
+
 # Checks the uncompressed ROM (code and data) and the final compressed ROM (packaging).
-check: $(ROM)
+check: $(ROM) ## build and compare both ROMs with the originals
 	@fail=0; \
 	if cmp -s $(DECOMPRESSED_BASEROM) $(UNCOMPRESSED_ROM); then \
 		printf '$(C_OK)OK$(C_RESET)    $(UNCOMPRESSED_ROM) matches $(DECOMPRESSED_BASEROM)\n'; \
@@ -102,6 +118,12 @@ check: $(ROM)
 		fail=1; \
 	fi; \
 	exit $$fail
+
+##@ Decompiling
+
+func: $(ELF) ## check functions byte by byte: A='func_800944E0' or A='--file src/x.c'
+	@test -n '$(A)' || { echo "usage: make func A='func_800944E0 ...' or A='--file src/core2/1ECA640.c'"; exit 2; }
+	@$(PYTHON3_BIN) tools/check_func.py $(A)
 
 $(UNCOMPRESSED_ROM): $(ELF)
 	$(call print,ROM,$@)
@@ -179,16 +201,18 @@ $(ULTRALIB_BOOT): $(ULTRALIB_CORE)
 $(BUILD_DIRS):
 	$(Q)mkdir -p $@
 
-clean:
-	find $(BUILD_ROOT) -type f -not -name '*.asmproc.d' -not -name '*.eeprom' -delete
+##@ Setup and cleanup
 
-setup:
+setup: ## build the tools, decompress the base ROM and split it (once)
 	$(MAKE) -C $(ULTRALIB_DIR) setup NON_MATCHING=1
 	$(MAKE) -C tools
 	tools/rom_decompressor baserom.us.z64 decompressed.us.z64
 	$(PYTHON3_BIN) tools/splat/split.py $(SPLAT_YAML)
 
-distclean:
+clean: ## delete the build outputs (keeps asm/ and the tools)
+	find $(BUILD_ROOT) -type f -not -name '*.asmproc.d' -not -name '*.eeprom' -delete
+
+distclean: ## delete everything generated, back to before setup
 	rm -rf $(BUILD_ROOT) asm assets $(DECOMPRESSED_BASEROM) undefined_*_auto.us.txt $(LD_SCRIPT)
 	$(MAKE) -C tools distclean
 	$(MAKE) -C $(ULTRALIB_DIR) distclean
@@ -202,7 +226,7 @@ MAKEFLAGS += -r
 .SUFFIXES:
 
 # Phony targets
-.PHONY: clean check setup distclean
+.PHONY: help build check func setup clean distclean
 
 # Debug variable print target
 print-% : ; $(info $* is a $(flavor $*) variable set to [$($*)]) @true
