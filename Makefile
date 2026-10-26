@@ -128,6 +128,22 @@ func: $(ELF) ## check functions byte by byte: A='func_800944E0' or A='--file src
 	@test -n '$(A)' || { echo "usage: make func A='func_800944E0 ...' or A='--file src/core2/1ECA640.c'"; exit 2; }
 	@$(PYTHON3_BIN) tools/check_func.py $(A)
 
+# splat rewrites every file in asm/. To keep incremental builds, it splits into a
+# fresh asm/ and rsync copies back only the files whose content changed, so make
+# rebuilds only what they affect. --delete also drops .s files of matched functions.
+split: ## regenerate asm/ from the ROM (after renaming symbols in symbol_addrs)
+	$(call print,GEN,asm/ (splat))
+	$(Q)rm -rf .asm-prev .asm-new
+	$(Q)if [ -d $(ASM_ROOT) ]; then mv $(ASM_ROOT) .asm-prev; fi
+	$(Q)$(PYTHON3_BIN) tools/splat/split.py $(SPLAT_YAML) > .split.log 2>&1 || { cat .split.log; \
+		rm -rf $(ASM_ROOT); if [ -d .asm-prev ]; then mv .asm-prev $(ASM_ROOT); fi; exit 1; }
+	$(Q)if [ -d .asm-prev ]; then \
+		mv $(ASM_ROOT) .asm-new && mv .asm-prev $(ASM_ROOT) && \
+		rsync -rc --delete --itemize-changes .asm-new/ $(ASM_ROOT)/ | grep -c '^[>*]' | xargs printf '          %s files changed in asm/\n' ; \
+		rm -rf .asm-new; \
+	fi
+	$(Q)rm -f .split.log
+
 $(UNCOMPRESSED_ROM): $(ELF)
 	$(call print,ROM,$@)
 	$(Q)$(OBJCOPY) $(Z64OFLAGS) $< $@
@@ -229,7 +245,7 @@ MAKEFLAGS += -r
 .SUFFIXES:
 
 # Phony targets
-.PHONY: help build check progress func setup clean distclean
+.PHONY: help build check progress func split setup clean distclean
 
 # Debug variable print target
 print-% : ; $(info $* is a $(flavor $*) variable set to [$($*)]) @true

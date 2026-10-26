@@ -66,3 +66,8 @@ venv/
 *.csv
 undefined_funcs_auto.us.txt
 undefined_syms_auto.us.txt
+
+# temporary dirs of make split
+.asm-prev/
+.asm-new/
+.split.log
