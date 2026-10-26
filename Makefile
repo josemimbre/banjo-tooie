@@ -128,6 +128,13 @@ func: $(ELF) ## check functions byte by byte: A='func_800944E0' or A='--file src
 	@test -n '$(A)' || { echo "usage: make func A='func_800944E0 ...' or A='--file src/core2/1ECA640.c'"; exit 2; }
 	@$(PYTHON3_BIN) tools/check_func.py $(A)
 
+twins: $(ELF) ## BK functions that match pending ones [A='--names --names-out build/bk_twin_names.txt']
+	@$(PYTHON3_BIN) tools/find_bk_twins.py $(A)
+
+rename: ## rename symbols everywhere: A='OLD NEW ...' or A='--file FILE' (then make split)
+	@test -n '$(A)' || { echo "usage: make rename A='OLD NEW [OLD NEW ...]' or A='--file FILE [--entrypoints] [--dry-run]'"; exit 2; }
+	@$(PYTHON3_BIN) tools/rename_symbol.py $(A)
+
 # splat rewrites every file in asm/. To keep incremental builds, it splits into a
 # fresh asm/ and rsync copies back only the files whose content changed, so make
 # rebuilds only what they affect. --delete also drops .s files of matched functions.
@@ -245,7 +252,7 @@ MAKEFLAGS += -r
 .SUFFIXES:
 
 # Phony targets
-.PHONY: help build check progress func split setup clean distclean
+.PHONY: help build check progress func twins rename split setup clean distclean
 
 # Debug variable print target
 print-% : ; $(info $* is a $(flavor $*) variable set to [$($*)]) @true
