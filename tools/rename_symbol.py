@@ -28,8 +28,12 @@ FILE has one rename per line, "OLD NEW" (or tab separated), or is the
 output of `tools/find_bk_twins.py --names-out`; there the commented
 entrypoint lines are only used with --entrypoints.
 
-A rename is refused when NEW is not a valid identifier, is already used
-anywhere in the project, or appears twice, or when OLD is not found.
+The whole batch is refused when a NEW name is not a valid identifier or
+appears twice. Single renames are skipped, and listed at the end, when NEW
+is already used in the project (comments do not count), when OLD is not
+found, or when OLD is a generic name whose address already has another name
+(in the symbol files or in build/us/banjotooie_decompressed.map from the
+last build).
 """
 
 import argparse
@@ -84,8 +88,13 @@ class Project:
         self.original = dict(self.text)
 
     def words(self):
+        """Identifiers used in the project, ignoring comments."""
         found = set()
-        for t in self.text.values():
+        for path, t in self.text.items():
+            t = re.sub(r"/\*.*?\*/", " ", t, flags=re.S)
+            t = re.sub(r"//[^\n]*", " ", t)
+            if path == TOML:
+                t = re.sub(r"#[^\n]*", " ", t)
             found.update(re.findall(r"\b[A-Za-z_][A-Za-z0-9_]*\b", t))
         return found
 
@@ -108,7 +117,41 @@ class Project:
             (ROOT / p).write_text(self.text[p], encoding="latin1")
 
 
-def rename(project, old, new, log):
+def map_names():
+    """{(segment or None, vram): name} from the last build's map, if there is one."""
+    path = ROOT / "build" / "us" / "banjotooie_decompressed.map"
+    if not path.exists():
+        return {}
+    import mapfile_parser
+    mapfile = mapfile_parser.MapFile()
+    mapfile.readMapFile(path)
+    names = {}
+    for segment in mapfile:
+        seg = segment.name.lstrip(".")
+        for suffix in ("_bss", "_header"):
+            seg = seg[:-len(suffix)] if seg.endswith(suffix) else seg
+        for file in segment:
+            for sym in file:
+                key = (seg if sym.vram >= OVERLAY_VRAM else None, sym.vram)
+                names.setdefault(key, sym.name)
+    return names
+
+
+def address_names(project, vram, segment, built):
+    """Names already given to vram (in that overlay segment, for overlays)."""
+    pattern = re.compile(rf"^\s*(\w+)\s*=\s*0x0*{vram:X};(.*)$", re.M | re.I)
+    names = []
+    for f in SYMBOL_FILES:
+        for name, rest in pattern.findall(project.text[f]):
+            if vram < OVERLAY_VRAM or (segment and f"segment:{segment}" in rest):
+                names.append(name)
+    name = built.get((segment if vram >= OVERLAY_VRAM else None, vram))
+    if name and not GENERIC_RE.match(name):
+        names.append(name)
+    return names
+
+
+def rename(project, old, new, log, built):
     is_entrypoint = f'"{old}"' in project.text[TOML]
     names = [(old, new)] + ([("_" + old, "_" + new)] if is_entrypoint else [])
     defined = False
@@ -137,6 +180,10 @@ def rename(project, old, new, log):
         if not m:
             return False
         vram = int(m.group(1), 16)
+        taken = address_names(project, vram, m.group(2), built)
+        if taken:
+            log.append(f"address 0x{vram:08X} is already named {', '.join(taken)}")
+            return False
         if vram >= OVERLAY_VRAM:
             if not m.group(2):
                 return False
@@ -166,24 +213,35 @@ def main():
     for old, new in pairs:
         if not IDENT_RE.match(new):
             errors.append(f"{new}: not a valid identifier")
-        elif new in used:
-            errors.append(f"{new}: already used in the project (for {old})")
         elif new in seen:
             errors.append(f"{new}: given for both {seen[new]} and {old}")
-        elif old not in used and not GENERIC_RE.match(old):
-            errors.append(f"{old}: not found")
         seen[new] = old
     if errors:
         sys.exit("refusing to rename:\n  " + "\n  ".join(errors))
 
-    rebuild_tools = False
+    built = map_names()
+    rebuild_tools, done, skipped = False, 0, []
     for old, new in pairs:
-        log = []
-        if not rename(project, old, new, log):
-            sys.exit(f"{old}: no symbol definition found and not a generic name; nothing written")
+        if new in used:
+            skipped.append(f"{old} -> {new}: {new} is already used in the project")
+            continue
+        if old not in used and not GENERIC_RE.match(old):
+            skipped.append(f"{old} -> {new}: {old} not found")
+            continue
+        log, before = [], dict(project.text)
+        if not rename(project, old, new, log, built):
+            project.text = before
+            skipped.append(f"{old} -> {new}: " + (log[-1] if log else "no symbol definition found"))
+            continue
+        done += 1
+        used.add(new)
         rebuild_tools |= any(SYSCALL_BUILDER in l for l in log)
         print(f"{old} -> {new}")
         for line in log:
+            print(f"    {line}")
+    if skipped:
+        print(f"\nskipped {len(skipped)}:")
+        for line in skipped:
             print(f"    {line}")
 
     changed = project.changed()
@@ -191,7 +249,7 @@ def main():
         print(f"\ndry run: {len(changed)} files would change, nothing written")
         return
     project.write()
-    print(f"\n{len(pairs)} renamed, {len(changed)} files changed. Next: "
+    print(f"\n{done} renamed, {len(changed)} files changed. Next: "
           + ("make -C tools && " if rebuild_tools else "") + "make split && make check")
 
 
