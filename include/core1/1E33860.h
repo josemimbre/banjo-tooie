@@ -3,7 +3,7 @@
 
 #include "common.h"
 //__heap_align
-s32 func_8001BD30(s32);
+s32 __heap_align(s32);
 
 
 #endif

@@ -206,7 +206,7 @@ u32 gcnewpause_entrypoint_2(PauseState* pauseMenu) {
 			pauseMenu->GameOverFadingIn = 0;
 			func_800FCAE0(0x12, 0, 0xc8);
 			func_800FCA90(0x12);
-			func_800A7AD4(1, 0);
+			game_setMapTransitionWithStyle(1, 0);
 			pauseMenu->ExitType = 2;
 			_gcfrontend_entrypoint_13();
 			break;

@@ -458,7 +458,7 @@ void func_80800D9C_chdippy(Actor* arg0)
             }
             else
             {
-                arg0->alpha = (s32)func_800F10B4(arg0->unk58, 1.0f, 0.0f, 255.0f, 0.0f);
+                arg0->alpha = (s32)ml_map_f(arg0->unk58, 1.0f, 0.0f, 255.0f, 0.0f);
             }
             arg0->unk64_16 = 1;
             if (func_800D90A4(&DIPPY_DATA(arg0)->unk8) != 0)
@@ -475,7 +475,7 @@ void func_80800D9C_chdippy(Actor* arg0)
                 }
                 if (DIPPY_DATA(arg0)->unk8 < 15.0f)
                 {
-                    if (rand_f() < func_800F10B4((f32)DIPPY_DATA(arg0)->unk8, 15.0f, 0.0f, 1.0f, 0.0f))
+                    if (rand_f() < ml_map_f((f32)DIPPY_DATA(arg0)->unk8, 15.0f, 0.0f, 1.0f, 0.0f))
                     {
                         sp54 = 1;
                     }
@@ -486,7 +486,7 @@ void func_80800D9C_chdippy(Actor* arg0)
                 }
                 else
                 {
-                    sp54 = (s32)func_800F10B4(DIPPY_DATA(arg0)->unk8, 30.0f, 0.0f, 3.0f, 1.0f);
+                    sp54 = (s32)ml_map_f(DIPPY_DATA(arg0)->unk8, 30.0f, 0.0f, 3.0f, 1.0f);
                 }
                 if (sp54 != 0)
                 {
@@ -498,7 +498,7 @@ void func_80800D9C_chdippy(Actor* arg0)
                     func_800BABB8(sp44, sp48, NULL, 1.0f, &D_808014D8_chdippy);
                     func_800BA4D0(sp44, 0x5DC);
                     func_800BA544(sp44, &_chdippy_entrypoint_2);
-                    func_800BA22C(sp44, sp54);
+                    particleEmitter_emitN(sp44, sp54);
                 }
             }
             break;
@@ -541,7 +541,7 @@ s32 func_80801110_chdippy(Actor* arg0, s32 arg1, s32 arg2)
                 arg0->rotation[1] = func_800F1DF4(arg0->position, sp34);
                 if (arg0->unk58 < 3.0f)
                 {
-                    func_800DF500(1.0f, func_800F10B4(arg0->unk58, 3.0f, 0.0f, 5.0f, 0.001f), 1.0f);
+                    func_800DF500(1.0f, ml_map_f(arg0->unk58, 3.0f, 0.0f, 5.0f, 0.001f), 1.0f);
                 }
                 else
                 {

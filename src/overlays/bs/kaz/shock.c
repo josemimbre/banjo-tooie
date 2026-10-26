@@ -37,8 +37,8 @@ void bskazshock_entrypoint_1(PlayerState *self) {
     self->unk164.bytes[0] = func_800C2E04();
     func_800C3418(self->unk164.bytes[0], 0);
     func_800C2E40(self->unk164.bytes[0]);
-    func_800C330C(self->unk164.bytes[0], 3);
-    func_800C301C(self->unk164.bytes[0], 0x41D);
+    sfxSource_setunk43_7ByIndex(self->unk164.bytes[0], 3);
+    sfxsource_setSfxId(self->unk164.bytes[0], 0x41D);
     func_800C3730(self->unk164.bytes[0], 1.4, 0.4, -1.2);
     self->unk15C.word = 1;
     self->unk160.word = 0;
@@ -108,7 +108,7 @@ void bskazshock_entrypoint_2(PlayerState *self) {
 }
 
 void bskazshock_entrypoint_3(PlayerState *self) {
-    func_800C2FDC(self->unk164.bytes[0]);
+    sfxsource_freeSfxsourceByIndex(self->unk164.bytes[0]);
     func_80092BF4(self);
     _bskaz_entrypoint_2(self);
 }

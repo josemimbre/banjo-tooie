@@ -7,20 +7,20 @@ typedef struct UNKD_80127F28 {
     u32 unk8_21 : 10;
     u32 unk8_0 : 21;
 }UNKD_80127F28;
-extern UNKD_80127F28 D_80127F28[];
-extern u8 D_80127F20;
+extern UNKD_80127F28 emitterData[];
+extern u8 initializingIndex;
 
 s32 func_800B56D0(u8 arg0)
 {
-    if (D_80127F28[arg0].unk4 == 0)
+    if (emitterData[arg0].unk4 == 0)
     {
-        D_80127F20 = arg0;
-        D_80127F28[arg0].unk4 = func_800B53A4(D_80127F28[arg0].unk8_21);
-        func_800B5534(D_80127F28[arg0].unk4);
-        D_80127F20 = 0;
+        initializingIndex = arg0;
+        emitterData[arg0].unk4 = func_800B53A4(emitterData[arg0].unk8_21);
+        func_800B5534(emitterData[arg0].unk4);
+        initializingIndex = 0;
     }
-    D_80127F28[arg0].unk0 = 1.0f;
-    return D_80127F28[arg0].unk4;
+    emitterData[arg0].unk0 = 1.0f;
+    return emitterData[arg0].unk4;
 }
 
 #pragma GLOBAL_ASM("asm/nonmatchings/core2/1E8EFC0/func_800B5758.s")
@@ -30,9 +30,9 @@ void func_800B5824(void)
     int index;
     for (index = 1; index < 0x2D; index++)
     {
-        if (D_80127F28[index].unk8_31 != 0)
+        if (emitterData[index].unk8_31 != 0)
         {
-            func_800B58D4(index);
+            pem_free(index);
         }
     }
 }
@@ -42,17 +42,17 @@ void func_800B5884(void)
     int index;
     for (index = 1; index < 0x2D; index++)
     {
-        D_80127F28[index].unk8_31 = 0;
+        emitterData[index].unk8_31 = 0;
     }
 }
 
-void func_800B58D4(u8 arg0)
+void pem_free(u8 arg0)
 {
-    if (D_80127F28[arg0].unk4 != 0)
+    if (emitterData[arg0].unk4 != 0)
     {
-        func_800B5450(D_80127F28[arg0].unk4);
+        func_800B5450(emitterData[arg0].unk4);
     }
-    D_80127F28[arg0].unk8_31 = 0;
+    emitterData[arg0].unk8_31 = 0;
 }
 
 void func_800B592C(void)
@@ -63,15 +63,15 @@ void func_800B592C(void)
     temp_f20 = time_getDelta();
     for (index = 1; index < 0x2D; index++)
     {
-        if (D_80127F28[index].unk8_31 != 0)
+        if (emitterData[index].unk8_31 != 0)
         {
-            temp_a0 = D_80127F28[index].unk4;
+            temp_a0 = emitterData[index].unk4;
             if ((temp_a0 != 0) && (func_800BA28C(temp_a0) != 0))
             {
-                D_80127F28[index].unk0 = (f32)(D_80127F28[index].unk0 - temp_f20);
-                if (D_80127F28[index].unk0 <= 0.0f) {
-                    func_800B5450(D_80127F28[index].unk4);
-                    D_80127F28[index].unk4 = 0U;
+                emitterData[index].unk0 = (f32)(emitterData[index].unk0 - temp_f20);
+                if (emitterData[index].unk0 <= 0.0f) {
+                    func_800B5450(emitterData[index].unk4);
+                    emitterData[index].unk4 = 0U;
                 }
             }
         }
@@ -83,12 +83,12 @@ void func_800B59E0(void)
     int index;
     for (index = 1; index < 0x2D; index++)
     {
-        if (D_80127F28[index].unk8_31 != 0)
+        if (emitterData[index].unk8_31 != 0)
         {
-            if ((D_80127F28[index].unk4 != 0) && (index != D_80127F20))
+            if ((emitterData[index].unk4 != 0) && (index != initializingIndex))
             {
-                func_800B5450(D_80127F28[index].unk4);
-                D_80127F28[index].unk4 = 0U;
+                func_800B5450(emitterData[index].unk4);
+                emitterData[index].unk4 = 0U;
             }
         }
     }
@@ -100,12 +100,12 @@ void func_800B5A6C(void)
     int index;
     for (index = 1; index < 0x2D; index++)
     {
-        if (D_80127F28[index].unk8_31 != 0)
+        if (emitterData[index].unk8_31 != 0)
         {
-            temp_a0 = D_80127F28[index].unk4;
+            temp_a0 = emitterData[index].unk4;
             if (temp_a0 != 0)
             {
-                D_80127F28[index].unk4 = func_800B5548(temp_a0);
+                emitterData[index].unk4 = func_800B5548(temp_a0);
             }
         }
     }

@@ -287,8 +287,8 @@ s32 func_808006DC_chfactoryrobot(Actor* arg0, f32 arg1, f32 arg2)
 {
     f32 gamespeed;
     gamespeed = time_getDelta();
-    arg0->unk54 = func_800F0D50(func_80013728(arg0->unk54), -80.0f, 80.0f);
-    arg0->unk50 = func_800F0D50(func_80013728(arg0->unk50), -60.0f, 60.0f);
+    arg0->unk54 = ml_clamp_f(func_80013728(arg0->unk54), -80.0f, 80.0f);
+    arg0->unk50 = ml_clamp_f(func_80013728(arg0->unk50), -60.0f, 60.0f);
     ((f32*)arg0->actorData)[5] = func_800F1FF0(((f32*)arg0->actorData)[5], arg0->unk54, 0.15f, gamespeed * arg1, gamespeed * arg2);
     ((f32*)arg0->actorData)[6] = func_800F1FF0(((f32*)arg0->actorData)[6], arg0->unk50, 0.15f, gamespeed * arg1, gamespeed * arg2);
     return func_800F20BC(((f32*)arg0->actorData)[5], arg0->unk54, 4.0f);
@@ -546,7 +546,7 @@ void func_80800FFC_chfactoryrobot(Actor* arg0, void* arg1)
 
     var_s0 = temp_v0->unk20 > 0.0f ? ((FactoryRobotStruct*)func_80100094(arg0, 0U))->unkA : 0;
 
-    func_800DF744(3, var_s0);
+    modelRender_setAppendageVisibility(3, var_s0);
     _subaddiefade_entrypoint_9(arg0, &sp34);
     var_s0 = temp_v0->unk14 != 0;
     if (var_s0 != 0)
@@ -621,7 +621,7 @@ s32 func_80801278_chfactoryrobot(Actor* arg0)
     {
         if (temp_s1->unk18 == 0)
         {
-            if ((temp_s1->unk1C == 0.0f) && (func_800C0638() == 0)
+            if ((temp_s1->unk1C == 0.0f) && (gcdialog_hasCurrentTextId() == 0)
                 && ((arg0->unk64_29) || ((func_8010D248() != 0) && (func_8010C500(arg0) != 0) && (_suchase_entrypoint_0() == arg0->unk0)))) {
                 temp_s1->unk18 = 1;
                 temp_s1->unk24 = rand_fBounded(2.0f, 4.0f);
@@ -661,7 +661,7 @@ s32 func_80801278_chfactoryrobot(Actor* arg0)
                 if (temp_s1->unk1C == 0.0f)
                 {
                     func_800EEB9C((f32*)&arg0->actorData[4], arg0->unk54, ((f32*)arg0->actorData)[3] * sp50);
-                    ((f32*)arg0->actorData)[5] = func_800F0D50(((f32*)arg0->actorData)[1] - arg0->position[1], -300.0f, 300.0f);
+                    ((f32*)arg0->actorData)[5] = ml_clamp_f(((f32*)arg0->actorData)[1] - arg0->position[1], -300.0f, 300.0f);
                 }
                 else {
                     ml_vec3f_clear((f32*)&arg0->actorData[4]);
@@ -677,7 +677,7 @@ s32 func_80801278_chfactoryrobot(Actor* arg0)
                 temp_s1->unk2C = func_800F1FF0(temp_s1->unk2C, temp_s1->unk30, 0.15f, time_getDelta() * 10.0f, time_getDelta() * 150.0f);
                 arg0->unk54 = temp_f0_2;
                 func_800EEB9C((f32*)&arg0->actorData[4], temp_s1->unk2C, ((f32*)arg0->actorData)[3]);
-                ((f32*)arg0->actorData)[5] = func_800F0D50(((f32*)arg0->actorData)[1] - arg0->position[1], -300.0f, 300.0f);
+                ((f32*)arg0->actorData)[5] = ml_clamp_f(((f32*)arg0->actorData)[1] - arg0->position[1], -300.0f, 300.0f);
             }
 
             func_80801954_chfactoryrobot(arg0);
@@ -706,7 +706,7 @@ s32 func_80801278_chfactoryrobot(Actor* arg0)
                     temp_s1->unk2C = func_800F1FF0(temp_s1->unk2C, temp_s1->unk30, 0.15f, time_getDelta() * 10.0f, time_getDelta() * 120.0f);
                     arg0->unk54 = temp_f0_3;
                     func_800EEB9C((f32*)&arg0->actorData[4], temp_s1->unk2C, ((f32*)arg0->actorData)[3]);
-                    ((f32*)arg0->actorData)[5] = func_800F0D50(((f32*)arg0->actorData)[1] - arg0->position[1], -300.0f, 300.0f);
+                    ((f32*)arg0->actorData)[5] = ml_clamp_f(((f32*)arg0->actorData)[1] - arg0->position[1], -300.0f, 300.0f);
                     if (func_8010B990(arg0, 0x504427) & 0x26)
                     {
                         func_80801C7C_chfactoryrobot(arg0);
@@ -996,7 +996,7 @@ void func_80801D7C_chfactoryrobot(Actor* arg0)
         break;
     case 9:
         func_800D2498(0x101, temp_s2->unk13, 0);
-        if (((s32)temp_s2->unk10 < func_800F1418((s32)temp_s2->unk11, (s32)temp_s2->unk13)) && (temp_s2->unk14 == 0))
+        if (((s32)temp_s2->unk10 < ml_min_w((s32)temp_s2->unk11, (s32)temp_s2->unk13)) && (temp_s2->unk14 == 0))
         {
             func_80108B04(arg0, 0U);
             func_80101FDC(arg0, 8U);
@@ -1184,7 +1184,7 @@ void func_808025D4_chfactoryrobot(Actor* arg0)
         func_80101FDC(arg0, 3U);
         func_80103110(arg0, 0U);
     }
-    temp_v0->unk11 = func_800F0D90((s32)arg0->rotation[1], 1, 4);
+    temp_v0->unk11 = ml_clamp_w((s32)arg0->rotation[1], 1, 4);
     temp_v0->unk10 = 0;
     temp_v0->unk14 = 1;
     index = 0;

@@ -144,7 +144,7 @@ void func_800ECEEC(s32 arg0, unkStruct800ECD60_var1 *arg1, unkStruct800ECD60_var
 
 #pragma GLOBAL_ASM("asm/nonmatchings/core2/1EC6180/func_800EDBA0.s")
 
-#pragma GLOBAL_ASM("asm/nonmatchings/core2/1EC6180/func_800EDC10.s")
+#pragma GLOBAL_ASM("asm/nonmatchings/core2/1EC6180/subaddie_positionMoveVertical.s")
 
 void func_800EDC64(unkStruct800EDC64* arg0, f32 arg1, f32 arg2, f32 arg3, s32 arg4) {
     arg0->unk29 = 7;
@@ -240,8 +240,8 @@ void func_800EE040(unkStruct800EE040* arg0, s32 arg1, f32 arg2, f32 arg3) {
     }
     arg0->unk20 = arg2;
     arg0->unk24 = arg3;
-    func_800C301C(var_a2, arg1);
-    func_800C330C(arg0->unk0, 3);
+    sfxsource_setSfxId(var_a2, arg1);
+    sfxSource_setunk43_7ByIndex(arg0->unk0, 3);
     func_800C31DC(arg0->unk0, (arg2 + arg3) * 0.5f);
     func_800C3058(arg0->unk0, 0x7D00);
     func_800C3BDC(arg0->unk0);

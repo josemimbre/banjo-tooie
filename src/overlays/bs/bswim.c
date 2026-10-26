@@ -272,7 +272,7 @@ void func_808006DC_bsbswim(PlayerState* self) {
         sp38[1] += 60.0f;
         sp44 = func_8009FBB0(self, sp38, 40.0f);
         func_800BA930((unkStruct800BA198*)sp44, -0x3C, -0x32, -0x3C, 0x3C, 0x64, 0x3C);
-        func_800BA22C(sp44, 1);
+        particleEmitter_emitN(sp44, 1);
     }
     if (anctrl_isAt(sp48, 0.08f) != 0)
     {
@@ -440,7 +440,7 @@ void func_80800C0C_bsbswim(PlayerState* self)
     sp38[1] += 60.0f;
     sp34 = func_8009FBB0(self, sp38, 25.0f);
     func_800BA930((unkStruct800BA198*)sp34, -0x3C, -0x32, -0x3C, 0x3C, 0x64, 0x3C);
-    func_800BA22C(sp34, 1);
+    particleEmitter_emitN(sp34, 1);
     if (baanim_isAt(self, 0.3f) != 0)
     {
         func_800951B4(self);
@@ -640,7 +640,7 @@ void func_808011C0_bsbswim(PlayerState* self)
         sp38[1] += 60.0f;
         sp44 = func_8009FBB0(self, sp38, 25.0f);
         func_800BA930((unkStruct800BA198*)sp44, -0x3C, -0x32, -0x3C, 0x3C, 0x64, 0x3C);
-        func_800BA22C(sp44, 1);
+        particleEmitter_emitN(sp44, 1);
     }
     if (_batimer_isGreaterThan(self, 1, 1.55f) != 0)
     {
@@ -723,7 +723,7 @@ void func_80801538_bsbswim(PlayerState* self)
     sp28 = func_800A3298(self);
     if (bs_getPreviousState(self) == BS_STATE_F_BBUSTER)
     {
-        sp28 = func_800F0E00(sp28, 600.0f);
+        sp28 = ml_max_f(sp28, 600.0f);
     }
     if (sp28 > 80.0f)
     {
@@ -743,7 +743,7 @@ void func_80801538_bsbswim(PlayerState* self)
         anctrl_setStart(temp_s0, 0.6412f);
         anctrl_start(temp_s0);
     }
-    temp_f0 = func_800F10B4(sp28, 40.0f, 1000.0f, -300.0f, -1200.0f);
+    temp_f0 = ml_map_f(sp28, 40.0f, 1000.0f, -300.0f, -1200.0f);
     self->unk178 = temp_f0;
     baphysics_set_vertical_velocity(self, temp_f0);
     func_8009FFD8(self, BAANIM_UPDATE_1_NORMAL, YAW_TYPE_3_BOUNDED, 3, BA_PHYSICS_9_NO_GRAVITY);
@@ -761,10 +761,10 @@ void func_808016B8_bsbswim(PlayerState* self)
     sp40[1] += 60.0f;
     sp3C = func_8009FBB0(self, &sp40, 20.0f);
     func_800BA930((unkStruct800BA198*)sp3C, -0x1E, -0x1E, -0x1E, 0x1E, 0x1E, 0x1E);
-    func_800BA22C(sp3C, 1);
+    particleEmitter_emitN(sp3C, 1);
     if (self->unk178 < 0.0f)
     {
-        self->unk178 += func_800F0E00(mlAbsF(self->unk178) * 0.1f, 50.0f);
+        self->unk178 += ml_max_f(mlAbsF(self->unk178) * 0.1f, 50.0f);
         baphysics_set_vertical_velocity(self, self->unk178);
     }
     if (player_isStable(self) != 0)

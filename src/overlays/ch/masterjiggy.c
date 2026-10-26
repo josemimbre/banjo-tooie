@@ -94,7 +94,7 @@ void func_80800414_chmasterjiggy(Actor* arg0)
 
 void func_8080047C_chmasterjiggy(s32 arg0)
 {
-    if ((func_800C0638() == 0) && (flag_getValue(FLAG5_D4E_UNK) == 0) && (_glcutDll_entrypoint_20() == 0))
+    if ((gcdialog_hasCurrentTextId() == 0) && (flag_getValue(FLAG5_D4E_UNK) == 0) && (_glcutDll_entrypoint_20() == 0))
     {
         func_800D2498(0x10EU, func_800D035C(1), 0U);
         func_800D2498(0x106U, _sujiggy_entrypoint_2(_sujiggy_entrypoint_0()), 0U);
@@ -130,7 +130,7 @@ void func_808004FC_chmasterjiggy(Actor* actor)
         func_8080047C_chmasterjiggy((s32)actor);
         return;
     case 4:
-        if ((func_800C0638() == 0) && (func_800D9078(&actor->unk58) != 0))
+        if ((gcdialog_hasCurrentTextId() == 0) && (func_800D9078(&actor->unk58) != 0))
         {
             func_808001B0_chmasterjiggy((s32)actor);
         }

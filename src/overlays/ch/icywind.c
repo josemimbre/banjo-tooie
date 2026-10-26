@@ -80,11 +80,11 @@ void func_808001AC_chicywind(Actor* arg0)
         sp34 = 0.65f;
         break;
     case TRANSFORM_2_SNOWBALL:
-        sp34 = func_800F10B4(func_800F5578(characterIndex), 1.0f, func_800F55A4(characterIndex), 0.6f, 1.0f);
+        sp34 = ml_map_f(func_800F5578(characterIndex), 1.0f, func_800F55A4(characterIndex), 0.6f, 1.0f);
         break;
     }
     func_800F5A00(characterIndex, sp40);
-    sp38 = func_800F10B4(ml_vec3f_distance(sp40, arg0->position), 1000.0f, 1800.0f, 1200.0f, 300.0f) * (1.0f / sp34);
+    sp38 = ml_map_f(ml_vec3f_distance(sp40, arg0->position), 1000.0f, 1800.0f, 1200.0f, 300.0f) * (1.0f / sp34);
     func_800EEB9C(sp4C, func_800F1DF4(arg0->position, sp40), sp38);
     func_800F48BC(characterIndex, &sp4C);
 }

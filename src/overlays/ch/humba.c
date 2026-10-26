@@ -234,8 +234,8 @@ s32 func_80800450_chhumba(Actor* arg0, s32 arg1, s32 arg2)
         func_801015D0(arg0);
         temp_v0_2 = func_80103CB8(arg0, func_801039E4(arg0->unk0));
         temp_v0_2->unk0 = 1;
-        func_800DF744(3, 0);
-        func_800DF744(5, 0);
+        modelRender_setAppendageVisibility(3, 0);
+        modelRender_setAppendageVisibility(5, 0);
         break;
     default:
         return 0;
@@ -440,7 +440,7 @@ void func_80800D74_chhumba(Actor* arg0)
         func_800EEB9C(sp2C, rand_fBounded(0.0f, 360.0f), rand_fBounded(0.0f, 1000.0f) * arg0->scale);
         sp2C[1] = -50.0f;
         func_800BABB8(sp38, sp2C, NULL, 1.0f, &D_808026A0_chhumba);
-        func_800BA22C(sp38, temp_v0);
+        particleEmitter_emitN(sp38, temp_v0);
     }
 }
 
@@ -653,7 +653,7 @@ void func_808015DC_chhumba(Actor* arg0)
 
     _suexpression_entrypoint_10(func_80100094(arg0, 1U), arg0->unk0, 0U);
     func_8080144C_chhumba(arg0->scale * 5.0f);
-    if (func_800C0638() != 0)
+    if (gcdialog_hasCurrentTextId() != 0)
     {
         HUMBA_DATA(arg0)->unkC = 1.5f;
     }

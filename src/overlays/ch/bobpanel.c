@@ -10,9 +10,9 @@ s32 func_8080004C_chbobpanel(Actor* arg0, s32 arg1, s32 arg2)
     if (arg1 == 0x1F)
     {
         func_801015D0(arg0);
-        func_800DF744(2, 3);
-        func_800DF744(3, 1);
-        func_800DF744(4, 1);
+        modelRender_setAppendageVisibility(2, 3);
+        modelRender_setAppendageVisibility(3, 1);
+        modelRender_setAppendageVisibility(4, 1);
         return 1;
     }
     return 0;

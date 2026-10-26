@@ -319,13 +319,13 @@ void func_80800A10_chbubbleelevator(Actor* arg0, s32 arg1) {
     if (arg0->unk70_10 != 8)
     {
         func_800D90A4(&arg0->unk50);
-        arg0->unk54 += (time_getDelta() * func_800F10B4(arg0->unk50, 0.0f, 3.0f, 1.0f, 3.0f));
+        arg0->unk54 += (time_getDelta() * ml_map_f(arg0->unk50, 0.0f, 3.0f, 1.0f, 3.0f));
         if (arg0->unk54 > 1.0f)
         {
             arg0->unk54 = (arg0->unk54 - 1.0f);
         }
         sp5C = arg0->unk54 * 360.0f;
-        sp58 = func_800F10B4(arg0->unk50, 0.0f, 3.0f, 0.075f, 0.200000003f);
+        sp58 = ml_map_f(arg0->unk50, 0.0f, 3.0f, 0.075f, 0.200000003f);
         ml_vec3f_copy(sp4C, arg0->position);
         sp4C[1] += 75.0f;
         func_800E3980(sp40);

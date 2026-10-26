@@ -75,7 +75,7 @@ s32 func_80800170_chdiggerbossbattery(Actor* arg0, s32 arg1, s32 arg2)
         break;
     case EVENT_1F_ACTOR_ONSCREEN:
         func_801015D0(arg0);
-        func_800DF744(1, 1);
+        modelRender_setAppendageVisibility(1, 1);
         break;
     default:
         return 0;

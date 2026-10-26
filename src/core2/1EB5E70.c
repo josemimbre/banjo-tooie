@@ -158,7 +158,7 @@ s32 func_800DF350()
 
 #pragma GLOBAL_ASM("asm/nonmatchings/core2/1EB5E70/func_800DF738.s")
 
-#pragma GLOBAL_ASM("asm/nonmatchings/core2/1EB5E70/func_800DF744.s")
+#pragma GLOBAL_ASM("asm/nonmatchings/core2/1EB5E70/modelRender_setAppendageVisibility.s")
 
 #pragma GLOBAL_ASM("asm/nonmatchings/core2/1EB5E70/func_800DF758.s")
 

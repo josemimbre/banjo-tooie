@@ -124,7 +124,7 @@ dlabel D_80076958
 dlabel D_8007695C
 /* 1E8E48C 8007695C */ .space 0x1C
 
-dlabel D_80076978
+dlabel sPiManagerData
 /* 1E8E4A8 80076978 */ .space 0x40
 
 dlabel D_800769B8

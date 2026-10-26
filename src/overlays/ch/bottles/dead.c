@@ -13,7 +13,7 @@ void func_80800034_chbottlesdead()
 
 void func_80800054_chbottlesdead(Actor* arg0, void* arg1) 
 {
-    func_800DF744(3, 0);
+    modelRender_setAppendageVisibility(3, 0);
     func_80101870(arg0, arg1);
 }
 

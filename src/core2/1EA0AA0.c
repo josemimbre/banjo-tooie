@@ -132,7 +132,7 @@ void func_800C7900(void)
     {
         temp_v0 = func_800C75A0(D_8012760C.unk0);
         sp1C = temp_v0;
-        if (func_800FCCD4(temp_v0) == 0)
+        if (comusic_isTrackQueued(temp_v0) == 0)
         {
             func_800C7618(sp1C, -1);
         }

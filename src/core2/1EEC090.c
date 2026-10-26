@@ -26,7 +26,7 @@ void func_801128D4(f32 arg0, f32* arg1, f32* arg2, f32 arg3, f32 arg4, f32 arg5)
     sp30 = time_getDelta();
     sp38 = func_800F1DCC(arg0, *arg1);
     if (mlAbsF(sp38) < arg5) {
-        *arg2 = func_800F1344(sp38, 0.0f, arg5, 10.0f, arg4);
+        *arg2 = ml_mapAbsRange_f(sp38, 0.0f, arg5, 10.0f, arg4);
     }
     else {
         phi_f0 = arg3 * sp30;

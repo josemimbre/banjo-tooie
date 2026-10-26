@@ -64,7 +64,7 @@ void func_80800058_chpoolkids(Actor* arg0)
         if (func_801022E4(arg0) == 0x2B9)
         {
             temp_f0 = func_80101F24(arg0);
-            (f32)arg0->actorData[5] = func_80013970(func_800F10B4(temp_f0, 0.75f, 0.99f, 0.0f, 180.0f));
+            (f32)arg0->actorData[5] = func_80013970(ml_map_f(temp_f0, 0.75f, 0.99f, 0.0f, 180.0f));
             if ((temp_f0 > 0.33f) && (temp_f0 < 0.52f))
             {
                 arg0->unk74_0 = 2;
@@ -262,13 +262,13 @@ void func_80800944_chpoolkids(Actor* arg0, f32 arg1)
         _fxsplash25d_entrypoint_0(sp34);
         temp_v0 = _fxsplash_entrypoint_2(sp34, 35.0f);
         func_800BA930(temp_v0, -0x15E, 0x12C, -0x15E, 0x15E, 0x1F4, 0x15E);
-        func_800BA22C(temp_v0, 6);
+        particleEmitter_emitN(temp_v0, 6);
         func_800BA930(temp_v0, -0x96, 0x1F4, -0x96, 0x96, 0x320, 0x96);
-        func_800BA22C(temp_v0, 6);
+        particleEmitter_emitN(temp_v0, 6);
         sp34[1] -= 30.0f;
         temp_v0 = _fxairbub_entrypoint_1(sp34, 20.0f, arg0->position[1], 1.0f);
         func_800BA930(temp_v0, -0x3C, -0xFA, -0x3C, 0x3C, -0x96, 0x3C);
-        func_800BA22C(temp_v0, 4);
+        particleEmitter_emitN(temp_v0, 4);
     }
 }
 

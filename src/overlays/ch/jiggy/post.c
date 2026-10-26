@@ -35,7 +35,7 @@ void func_80800068_chjiggypost(Actor* arg0)
     s32 temp_a0;
     s32 temp;
 
-    if (func_800C0638() == 0)
+    if (gcdialog_hasCurrentTextId() == 0)
     {
         func_800D2498(0x10EU, func_800D035C(1), 0U);
         temp = _sujiggy_entrypoint_0();

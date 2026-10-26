@@ -66,7 +66,7 @@ void func_8080019C_bsbbilldrill(PlayerState* self) {
     sp1C = func_80800158_bsbbilldrill(sp24);
     func_800BA7C4(sp1C, sp20, sp20);
     func_800BA7FC(sp1C, sp20, sp20);
-    func_800BA22C(sp1C, 2);
+    particleEmitter_emitN(sp1C, 2);
 }
 
 void func_80800250_bsbbilldrill(PlayerState* arg0) {
@@ -74,7 +74,7 @@ void func_80800250_bsbbilldrill(PlayerState* arg0) {
 
     player_getCoords(arg0, sp1C);
     sp1C[1] -= 80.0f;
-    func_800BA22C(_fxdlsmoke_entrypoint_0(sp1C), 1);
+    particleEmitter_emitN(_fxdlsmoke_entrypoint_0(sp1C), 1);
 }
 
 void func_80800298_bsbbilldrill(PlayerState* self) {
@@ -194,9 +194,9 @@ void bsbbilldrill_entrypoint_2(PlayerState* self) {
             func_80800298_bsbbilldrill(self);
             temp_f0 = _batimer_get(self, 0);
             sp40 = temp_f0;
-            self->unk170 = func_800F10B4(temp_f0, 0, 0.3f, 1500.0f, 50.0f);
+            self->unk170 = ml_map_f(temp_f0, 0, 0.3f, 1500.0f, 50.0f);
             func_808005C0_bsbbilldrill(self);
-            func_80098520(self, func_800F10B4(sp40, 0.0f, 0.3f, 1.0f, 0.0f));
+            func_80098520(self, ml_map_f(sp40, 0.0f, 0.3f, 1.0f, 0.0f));
             if (_batimer_decrement(self, 0) != 0) {
                 func_808002DC_bsbbilldrill(self, 2);
             }

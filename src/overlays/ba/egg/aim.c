@@ -10,7 +10,7 @@ f32 func_80800008_baeggaim(f32 arg0, f32 arg1, f32 arg2)
     s32 var_s0;
     for (var_s0 = 0; var_s0 < func_800D8FEC() * 5; var_s0++)
     {
-        arg0 += func_800F0DC0((arg1 - arg0) * 0.04f, arg2);
+        arg0 += ml_clamp_abs_f((arg1 - arg0) * 0.04f, arg2);
     }
     return arg0;
 }
@@ -58,8 +58,8 @@ void func_80800170_baeggaim(f32* arg0, f32* arg1, f32 arg2)
     {
         var_f18 = temp_f0;
     }
-    arg1[0] = func_800F1344(var_f12, 0.0f, 40.0f, 0, arg2);
-    arg1[1] = func_800F1344(var_f18, 0.0f, 32.5f, 0, arg2);
+    arg1[0] = ml_mapAbsRange_f(var_f12, 0.0f, 40.0f, 0, arg2);
+    arg1[1] = ml_mapAbsRange_f(var_f18, 0.0f, 32.5f, 0, arg2);
 }
 
 void func_80800264_baeggaim(PlayerState* arg0, f32* arg1)

@@ -11,7 +11,7 @@ void func_800B5B40(void)
     int index;
     for (index = 0; index < 0x28; index++)
     {
-        func_800B58D4(D_80128151[index]);
+        pem_free(D_80128151[index]);
         D_80128151[index] = 0;
     }
 }

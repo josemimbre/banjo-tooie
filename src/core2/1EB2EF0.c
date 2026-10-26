@@ -2,7 +2,7 @@
 #define LENGTH_SQ_VEC4F(v) (v[0]*v[0] + v[1]*v[1] + v[2]*v[2] + v[3]*v[3])
 
 //vec4f_copy
-void func_800D9600(f32 dst[4], f32 src[4]) {
+void vec4f_clone(f32 dst[4], f32 src[4]) {
     dst[0] = src[0];
     dst[1] = src[1];
     dst[2] = src[2];

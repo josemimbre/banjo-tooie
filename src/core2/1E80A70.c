@@ -20,7 +20,7 @@ typedef struct {
 extern s32 D_8011A3F0;
 extern s32 D_8011A3F4;
 extern f32 D_801255F8;
-extern D_80127630_unk D_80127630;
+extern D_80127630_unk sGameState;
 
 extern s32 D_80127658;
 extern s32 D_80127674;
@@ -49,8 +49,8 @@ s32* func_800A7180(void)
 
 void func_800A7584(s32 arg0, s32 arg1)
 {
-    D_80127630.unk1A = arg0 + 1;
-    D_80127630.unk1B = arg1;
+    sGameState.unk1A = arg0 + 1;
+    sGameState.unk1B = arg1;
 }
 
 #pragma GLOBAL_ASM("asm/nonmatchings/core2/1E80A70/func_800A759C.s")
@@ -76,18 +76,18 @@ void func_800A791C(s32 arg0, s32 arg1, s32 arg2)
 
 void func_800A7A5C(void) 
 {
-    D_80127630.unk18 = 1;
+    sGameState.unk18 = 1;
 }
 #pragma GLOBAL_ASM("asm/nonmatchings/core2/1E80A70/func_800A7A6C.s")
 
 #pragma GLOBAL_ASM("asm/nonmatchings/core2/1E80A70/func_800A7A90.s")
 
-#pragma GLOBAL_ASM("asm/nonmatchings/core2/1E80A70/func_800A7AD4.s")
+#pragma GLOBAL_ASM("asm/nonmatchings/core2/1E80A70/game_setMapTransitionWithStyle.s")
 
 //Set Warp Bit To On
 void func_800A7B18(u32 warpVal)
 {
-    D_80127630.unk12 = warpVal;
+    sGameState.unk12 = warpVal;
 }
 
 #pragma GLOBAL_ASM("asm/nonmatchings/core2/1E80A70/func_800A7B24.s")
@@ -101,14 +101,14 @@ s32 func_800A7D84(void)
     s32 sp1C;
     s32 temp_v0;
 
-    D_80127630.unk8 += time_getDelta();
+    sGameState.unk8 += time_getDelta();
 
 
     if (func_800C9510() == 0)
     {
 
-        temp_v0 = D_80127630.unk12;
-        D_80127630.unk12 = 0U;
+        temp_v0 = sGameState.unk12;
+        sGameState.unk12 = 0U;
         if (temp_v0 != 0)
         {
             switch (temp_v0)
@@ -117,21 +117,21 @@ s32 func_800A7D84(void)
                 func_800A76F4(3);
                 return 0;
             case 2:
-                func_800A76F4(D_80127630.unk2);
+                func_800A76F4(sGameState.unk2);
                 return 0;
             case 3:
-                func_800A9924(D_80127630.mapValue, D_80127630.entranceIndex);
+                func_800A9924(sGameState.mapValue, sGameState.entranceIndex);
                 func_800A76F4(5);
                 return 0;
             }
         }
-        temp_v0 = D_80127630.unk1A;
+        temp_v0 = sGameState.unk1A;
     }
 
-    if (D_80127630.unk1A != 0)
+    if (sGameState.unk1A != 0)
     {
-        func_800A759C(D_80127630.unk1A - 1, D_80127630.unk1B);
-        D_80127630.unk1A = 0U;
+        func_800A759C(sGameState.unk1A - 1, sGameState.unk1B);
+        sGameState.unk1A = 0U;
     }
     sp1C = func_800EA170();
 
@@ -142,14 +142,14 @@ s32 func_800A7D84(void)
     func_800C7900();
     func_800C427C();
     func_800FB968();
-    switch (D_80127630.unk2)
+    switch (sGameState.unk2)
     {
         case 5:
             func_800A9A14();
             break;
         case 3:
-            D_80127630.unkC += time_getDelta();
-            if ((D_801255F8 < D_80127630.unkC) && (func_800C0A34() != 0))
+            sGameState.unkC += time_getDelta();
+            if ((D_801255F8 < sGameState.unkC) && (func_800C0A34() != 0))
             {
                 func_800A759C(4, 0U);
             }
@@ -256,7 +256,7 @@ void func_800A7FD4(void) {
     inventory_defrag();
     func_8010E030();
     func_800C075C();
-    if (D_80127630.unk2 == 4) {
+    if (sGameState.unk2 == 4) {
         func_800C08C0();
     }
     func_801005B8();
@@ -281,53 +281,53 @@ void func_800A7FD4(void) {
 }
 
 void func_800A8168(void) {
-    D_80127630.unk4 = 1;
+    sGameState.unk4 = 1;
 }
 
 s16 func_800A8178(void) {
-    return D_80127630.unk4;
+    return sGameState.unk4;
 }
 
 s16 func_800A8184(void) {
-    return D_80127630.unk2;
+    return sGameState.unk2;
 }
 
 u8 func_800A8190(void) {
-    return D_80127630.unk1C;
+    return sGameState.unk1C;
 }
 
 int func_800A819C(void) {
-    return D_80127630.unk2 == 3 || D_80127630.unk2 == 5;
+    return sGameState.unk2 == 3 || sGameState.unk2 == 5;
 }
 
 int func_800A81C4(void) {
     s32 a, b;
-    if (D_80127630.mapValue == 0) {
+    if (sGameState.mapValue == 0) {
         return 0;
     }
-    a = _gcsectionDll_entrypoint_4(D_80127630.mapValue);
+    a = _gcsectionDll_entrypoint_4(sGameState.mapValue);
     b = _gcsectionDll_entrypoint_4(func_800EA05C());
-    return b != a && D_80127630.unk6 == 0;
+    return b != a && sGameState.unk6 == 0;
 }
 
 void func_800A8230(void) {
-    D_80127630.unk6 = 1;
+    sGameState.unk6 = 1;
 }
 
 void func_800A8240(void) {
-    D_80127630.unk6 = 0;
+    sGameState.unk6 = 0;
 }
 
 s16 func_800A824C(void) {
-    return D_80127630.unk6;
+    return sGameState.unk6;
 }
 
 f32 func_800A8258(void) {
-    return D_80127630.unk8;
+    return sGameState.unk8;
 }
 
 int func_800A8264(void) {
-    return D_80127630.unk12 != 0;
+    return sGameState.unk12 != 0;
 }
 
 #pragma GLOBAL_ASM("asm/nonmatchings/core2/1E80A70/func_800A8278.s")

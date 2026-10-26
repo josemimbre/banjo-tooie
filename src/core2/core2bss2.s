@@ -352,7 +352,7 @@ dlabel D_8012D5E0
 dlabel D_8012D5F0
     /* 8012D5F0 */ .space 0x04
 
-dlabel D_8012D5F4
+dlabel sPictureBoxColorBufferBase
     /* 8012D5F4 */ .space 0x0C
 
 dlabel D_8012D600

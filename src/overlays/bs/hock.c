@@ -32,8 +32,8 @@ void bsbshock_entrypoint_0(PlayerState* self) {
     self->unk164.bytes[0] = func_800C2E04();
     func_800C3418(self->unk164.bytes[0], 0);
     func_800C2E40(self->unk164.bytes[0]);
-    func_800C330C(self->unk164.bytes[0], 3);
-    func_800C301C(self->unk164.bytes[0], 0x41D);
+    sfxSource_setunk43_7ByIndex(self->unk164.bytes[0], 3);
+    sfxsource_setSfxId(self->unk164.bytes[0], 0x41D);
     func_800C3730(self->unk164.bytes[0], 1.4f, 0.4f, -1.2f);
     func_80093300(self, -87.0f);
     func_8009C1B4(self, -87.0f);
@@ -136,7 +136,7 @@ void bsbshock_entrypoint_1(PlayerState* self)
 
 void bsbshock_entrypoint_2(PlayerState* self)
 {
-    func_800C2FDC(self->unk164.bytes[0]);
+    sfxsource_freeSfxsourceByIndex(self->unk164.bytes[0]);
     func_800A0CE8(self, 0);
     func_800A0CF4(self, 0);
     if (func_80092BF4(self) != 0.0f)

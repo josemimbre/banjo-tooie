@@ -34,7 +34,7 @@ void func_80800000_bstnt(PlayerState* self) {
 void func_80800028_bstnt(PlayerState* self)
 {
 	if (self->unk160.bytes[0] != 0) {
-		func_800C2FDC(self->unk160.bytes[0]);
+		sfxsource_freeSfxsourceByIndex(self->unk160.bytes[0]);
 	}
 	self->unk160.bytes[0] = 0U;
 }
@@ -48,7 +48,7 @@ void func_80800068_bstnt(PlayerState* self) {
 void func_8080009C_bstnt(PlayerState* self)
 {
 	if (self->unk160.bytes[0] != 0) {
-		func_800C2FDC(self->unk160.bytes[0]);
+		sfxsource_freeSfxsourceByIndex(self->unk160.bytes[0]);
 	}
 	self->unk160.bytes[0] = 0U;
 }
@@ -70,7 +70,7 @@ void func_80800164_bstnt(PlayerState* self) {
 		baphysics_set_target_horizontal_velocity(self, 0.0f);
 		return;
 	}
-	baphysics_set_target_horizontal_velocity(self, func_800F1214(sp1C, 30.0f, 600.0f));
+	baphysics_set_target_horizontal_velocity(self, ml_interpolate_f(sp1C, 30.0f, 600.0f));
 }
 
 s32 func_808001C8_bstnt(PlayerState* self, s32 arg1)
@@ -131,10 +131,10 @@ void func_8080030C_bstnt(PlayerState* self, f32* arg1)
 	{
 		ml_vec3f_assign_value(sp78, 0.0f, var_s0, 480.0f);
 		func_800BA994((unkStruct800BA198*)temp_v0, sp78[0], sp78[1], sp78[2], sp78[0], sp78[1], sp78[2]);
-		func_800BA22C(temp_v0, 1);
+		particleEmitter_emitN(temp_v0, 1);
 		ml_vec3f_assign_value(sp78, -45.0f, var_s0, 430.0f);
 		func_800BA994((unkStruct800BA198*)temp_v0, sp78[0], sp78[1], sp78[2], sp78[0], sp78[1], sp78[2]);
-		func_800BA22C(temp_v0, 1);
+		particleEmitter_emitN(temp_v0, 1);
 	}
 }
 
@@ -198,7 +198,7 @@ void func_80800720_bstnt(PlayerState* self)
 {
 	u32 temp_t9;
 
-	temp_t9 = (u32)func_800F0E00((f32)(self->unk168.bytes[1] - 1), 0.0f);
+	temp_t9 = (u32)ml_max_f((f32)(self->unk168.bytes[1] - 1), 0.0f);
 	self->unk168.bytes[1] = (u8)temp_t9;
 	if (!(self->unk168.bytes[1])) {
 		func_808006EC_bstnt(self);
@@ -281,7 +281,7 @@ void func_80800998_bstnt(PlayerState* self) {
 		self->unk170 = temp_f0;
 		func_8009328C(self, temp_f0);
 		if (baanim_getTimer(self) > 0.78f) {
-			self->unk16C = func_800F0E00(0.0f, self->unk16C - (750.0f * sp20));
+			self->unk16C = ml_max_f(0.0f, self->unk16C - (750.0f * sp20));
 		}
 		if (baanim_isAt(self, 0.5f) != 0) {
 			func_80800554_bstnt(self);
@@ -710,8 +710,8 @@ void func_80801980_bstnt(PlayerState* self, u32 arg1) {
 		baphysics_set_horizontal_velocity(self, sp28, baphysics_get_target_horizontal_velocity(self));
 		temp_f0 = baphysics_get_target_horizontal_velocity(self);
 		sp38 = temp_f0;
-		sp34 = func_800F10B4(temp_f0, 30.0f, 600.0f, 0.35f, 0.7f);
-		sp30 = func_800F10B4(sp38, 30.0f, 600.0f, 346.75f, 693.5f);
+		sp34 = ml_map_f(temp_f0, 30.0f, 600.0f, 0.35f, 0.7f);
+		sp30 = ml_map_f(sp38, 30.0f, 600.0f, 346.75f, 693.5f);
 		anctrl_reset(sp3C);
 		anctrl_setIndex(sp3C, 0xE2);
 		anctrl_setSubrange(sp3C, 0.0f, 0.4008f);

@@ -208,7 +208,7 @@ dlabel D_8012762C
 dlabel D_8012762D
     /* 8012762D */ .space 0x03
 
-dlabel D_80127630
+dlabel sGameState
     /* 80127630 */ .space 0x02
 
 dlabel D_80127632
@@ -400,7 +400,7 @@ dlabel D_80127EF8
 dlabel D_80127EFC
     /* 80127EFC */ .space 0x04
 
-dlabel D_80127F00
+dlabel emitterIndexes
     /* 80127F00 */ .space 0x03
 
 dlabel D_80127F03
@@ -424,10 +424,10 @@ dlabel D_80127F1C
 dlabel D_80127F1D
     /* 80127F1D */ .space 0x03
 
-dlabel D_80127F20
+dlabel initializingIndex
     /* 80127F20 */ .space 0x08
 
-dlabel D_80127F28
+dlabel emitterData
     /* 80127F28 */ .space 0x0C
 
 dlabel D_80127F34
@@ -640,7 +640,7 @@ dlabel D_80128774
 dlabel D_80128778
     /* 80128778 */ .space 0x138
 
-dlabel D_801288B0
+dlabel g_Dialog
     /* 801288B0 */ .space 0x08
 
 dlabel D_801288B8

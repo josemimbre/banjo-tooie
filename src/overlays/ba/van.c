@@ -25,7 +25,7 @@ void bavan_entrypoint_1(PlayerState *self) {
 }
 
 void bavan_entrypoint_2(PlayerState *self) {
-    func_800C2FDC(self->van->unk10);
+    sfxsource_freeSfxsourceByIndex(self->van->unk10);
     self->van->unk10 = 0;
 }
 
@@ -46,7 +46,7 @@ void bavan_entrypoint_4(PlayerState *self, f32 arg1) {
 }
 
 void bavan_entrypoint_5(PlayerState *self, f32 arg1) {
-    self->van->unk4 = func_800F0DC0(arg1, 50.0f);
+    self->van->unk4 = ml_clamp_abs_f(arg1, 50.0f);
 }
 
 void bavan_entrypoint_6(PlayerState *self, f32 arg1) {

@@ -31,7 +31,7 @@ void bawasher_entrypoint_3(PlayerState *self, f32 arg1[3]) {
 }
 
 void bawasher_entrypoint_4(PlayerState *self, f32 arg1) {
-    self->washer->unk4 = func_800F0DC0(arg1, 50.0f);
+    self->washer->unk4 = ml_clamp_abs_f(arg1, 50.0f);
 }
 
 void bawasher_entrypoint_5(PlayerState *self, f32 arg1) {

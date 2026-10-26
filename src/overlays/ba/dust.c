@@ -70,7 +70,7 @@ void badust_entrypoint_2(PlayerState* arg0, f32* arg1, f32* arg2, f32 arg3, f32 
     func_800BA8F8(temp_v0, arg5, arg5);
     temp_f0 = 19.0f / arg5;
     func_800BA5BC(temp_v0, temp_f0, temp_f0);
-    func_800BA22C(temp_v0, 1);
+    particleEmitter_emitN(temp_v0, 1);
 }
 
 void badust_entrypoint_3(PlayerState* arg0, f32 arg1, f32 arg2)
@@ -104,7 +104,7 @@ void badust_entrypoint_4(PlayerState* arg0, f32 arg1, f32 arg2)
     func_800BA7FC(temp_v0, 0.7f, 0.75f);
     func_800BA8F8(temp_v0, 0.6f, 0.7f);
     func_800BA5BC(temp_v0, 19.0f, 19.0f);
-    func_800BA22C(temp_v0, 1);
+    particleEmitter_emitN(temp_v0, 1);
 }
 
 void badust_entrypoint_5(PlayerState* arg0, f32 arg1, f32 arg2)

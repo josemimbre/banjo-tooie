@@ -247,7 +247,7 @@ void func_800191F8(f32 x, f32 y, f32 z){
     s_mtx_stack->m[3][2] = z;
 }
 
-void func_80019224(f32 arg0[3], f32 arg1[3]) {
+void mlMtx_apply_vec3f(f32 arg0[3], f32 arg1[3]) {
     s32 i;
     f32 sp0[3];
 
@@ -315,7 +315,7 @@ void func_8001953C(s32 arg0[3], s32 arg1[3], s32 arg2[3], s32 arg3[3]) {
     }
 
     for(var_t0 = 0; var_t0 < 8; var_t0++) {
-        func_80019224(sp48[var_t0], sp48[var_t0]);
+        mlMtx_apply_vec3f(sp48[var_t0], sp48[var_t0]);
     }
 
     for(var_t0 = 0; var_t0< 3; var_t0++) {

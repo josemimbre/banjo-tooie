@@ -776,7 +776,7 @@ void func_80800968_chnests(Actor* arg0, s32 arg1)
     if (func_80800898_chnests(arg0, arg1, arg0->rotation[1]) != 0)
     {
         func_800DF3E0();
-        func_800DF744(D_80801118_chnests[arg0->actorData[1]].unkC, 1);
+        modelRender_setAppendageVisibility(D_80801118_chnests[arg0->actorData[1]].unkC, 1);
         func_801018A4(arg0, arg1);
     }
 }
@@ -795,7 +795,7 @@ void func_80800A00_chnests(Actor* arg0, s32 arg1)
     if (func_80800898_chnests(arg0, arg1, arg0->rotation[1]) != 0)
     {
         func_800DF3E0();
-        func_800DF744(D_80801118_chnests[arg0->actorData[1]].unkC, 1);
+        modelRender_setAppendageVisibility(D_80801118_chnests[arg0->actorData[1]].unkC, 1);
         func_801018A4(arg0, arg1);
     }
 }
@@ -916,7 +916,7 @@ void func_80800D8C_chnests(Actor* arg0, s32 arg1)
     if (func_80800898_chnests(arg0, arg1, arg0->rotation[1]) != 0)
     {
         func_800DF3E0();
-        func_800DF744(D_80801118_chnests[arg0->actorData[1]].unkC, 1);
+        modelRender_setAppendageVisibility(D_80801118_chnests[arg0->actorData[1]].unkC, 1);
         if (arg0->actorData[6] == 1)
         {
             temp_f18 = (s32)((arg0->unk58 / 0.25f) * 255.0f);
@@ -924,7 +924,7 @@ void func_80800D8C_chnests(Actor* arg0, s32 arg1)
             _subaddiefade_entrypoint_1(arg0, temp_f18);
             func_801018A4(arg0, arg1);
             func_800DF3E0();
-            func_800DF744(D_80801118_chnests[arg0->unk6C_0].unkC, 1);
+            modelRender_setAppendageVisibility(D_80801118_chnests[arg0->unk6C_0].unkC, 1);
             arg0->unk7A_14 = 1;
             _subaddiefade_entrypoint_1(arg0, 0xFF - temp_f18);
             func_801018A4(arg0, arg1);

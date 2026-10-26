@@ -114,12 +114,12 @@ void func_8080015C_chheggy(Actor* arg0)
         func_800BA450(sp58, (s16)sp48[0], -0xC8, (s16)sp48[2], sp3C[0], -0x190, sp3C[2]);
         func_800BA450(sp54, (s16)sp48[0], -0xC8, (s16)sp48[2], sp3C[0], -0x190, sp3C[2]);
         func_800BABB8(sp58, sp6C, NULL, 1.0f, &D_80801E38_chheggy);
-        func_800BA22C(sp58, 2);
+        particleEmitter_emitN(sp58, 2);
         func_800BABB8(sp54, sp6C, NULL, 1.0f, &D_80801E60_chheggy);
-        func_800BA22C(sp54, 3);
+        particleEmitter_emitN(sp54, 3);
         func_800C4140(0xA62FA404, arg0->position, 0x0FA00064);
     }
-    if (func_800C0638() == 0)
+    if (gcdialog_hasCurrentTextId() == 0)
     {
         if (sp64 != 0)
         {
@@ -302,7 +302,7 @@ void func_808009DC_chheggy(Actor* arg0)
         }
         else if (sp44 <= 0.16f)
         {
-            sp44 = func_800F10B4(func_80101F24(arg0), 0.035f, 0.16f, 0.0f, 1.0f);
+            sp44 = ml_map_f(func_80101F24(arg0), 0.035f, 0.16f, 0.0f, 1.0f);
         }
         else
         {
@@ -321,7 +321,7 @@ void func_808009DC_chheggy(Actor* arg0)
         sp40 = func_80100094(arg0, 0U);
         if (func_80101F24(arg0) <= 0.92f)
         {
-            sp3C = func_800F10B4(func_80101F24(arg0), 0.84f, 0.92f, 0.0f, 1.0f);
+            sp3C = ml_map_f(func_80101F24(arg0), 0.84f, 0.92f, 0.0f, 1.0f);
         }
         else
         {
@@ -733,8 +733,8 @@ s32 func_80801A00_chheggy(Actor* arg0, s32 arg1, s32 arg2)
         return 1;
     case EVENT_1F_ACTOR_ONSCREEN:
         func_801015D0(arg0);
-        func_800DF744(1, 1);
-        func_800DF744(2, 0);
+        modelRender_setAppendageVisibility(1, 1);
+        modelRender_setAppendageVisibility(2, 0);
         return 1;
     }
     return 0;

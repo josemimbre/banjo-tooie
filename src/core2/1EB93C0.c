@@ -1,6 +1,6 @@
 #include "core2/1EB93C0.h"
 
-#pragma GLOBAL_ASM("asm/nonmatchings/core2/1EB93C0/func_800DFAD0.s")
+#pragma GLOBAL_ASM("asm/nonmatchings/core2/1EB93C0/boneTransformList_reset.s")
 
 #pragma GLOBAL_ASM("asm/nonmatchings/core2/1EB93C0/func_800DFB40.s")
 

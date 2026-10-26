@@ -56,8 +56,8 @@ void func_808000B8_chcauldronenergybars(Actor* arg0)
             actor_mark_delete(arg0);
         }
         _subaddieaudioloop_entrypoint_4(arg0, arg0->position, 1, &D_808002C0_chcauldronenergybars);
-        _subaddieaudioloop_entrypoint_0(arg0, func_800F10B4(arg0->unk58, CAULDRONENERGYBARS_DATA(arg0)->unk1C, 0.0f, 1.4f, 0.7f));
-        arg0->alpha = (u8)(s32)func_800F10B4(arg0->unk58, CAULDRONENERGYBARS_DATA(arg0)->unk1C, 0.0f, 255.0f, 0.0f);
+        _subaddieaudioloop_entrypoint_0(arg0, ml_map_f(arg0->unk58, CAULDRONENERGYBARS_DATA(arg0)->unk1C, 0.0f, 1.4f, 0.7f));
+        arg0->alpha = (u8)(s32)ml_map_f(arg0->unk58, CAULDRONENERGYBARS_DATA(arg0)->unk1C, 0.0f, 255.0f, 0.0f);
         return;
     }
 }

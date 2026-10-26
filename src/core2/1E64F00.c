@@ -14,9 +14,9 @@
 
 #pragma GLOBAL_ASM("asm/nonmatchings/core2/1E64F00/func_8008B90C.s")
 
-#pragma GLOBAL_ASM("asm/nonmatchings/core2/1E64F00/func_8008B954.s")
+#pragma GLOBAL_ASM("asm/nonmatchings/core2/1E64F00/animCache_release.s")
 
-#pragma GLOBAL_ASM("asm/nonmatchings/core2/1E64F00/func_8008B9C4.s")
+#pragma GLOBAL_ASM("asm/nonmatchings/core2/1E64F00/animCache_getBoneTransformList.s")
 
 #pragma GLOBAL_ASM("asm/nonmatchings/core2/1E64F00/func_8008BA5C.s")
 

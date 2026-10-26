@@ -219,7 +219,7 @@ void func_8080096C_chdinofamilymother(Actor* arg0)
             func_800BAA60(spC8, spD0, 0x64, 0xC8);
             spD0[1] += 50.0f;
             func_800BABB8(spC8, spD0, NULL, 1.0f, &D_80801440_chdinofamilymother);
-            func_800BA22C(spC8, 3);
+            particleEmitter_emitN(spC8, 3);
             func_800C4140(0x59957C4B, spD0, 0x0BB80190);
         }
         if (func_80101E14(arg0, 0.92f) != 0)
@@ -228,12 +228,12 @@ void func_8080096C_chdinofamilymother(Actor* arg0)
             _subaddieskeleton_entrypoint_0(arg0, 0x10, spBC);
             ml_vec3f_copy(spB0, spBC);
             spB0[1] -= 300.0f;
-            func_800BEF00(spBC, spB0, spA4, 0);
+            mapModel_intersectLine(spBC, spB0, spA4, 0);
             func_800BA670(spA0, rand_f() < 0.5f ? 0x8A2 : 0x8A3);
             func_800BA930(spA0, -0x15E, 0x96, -0xC8, -0x12C, 0xC8, -0x96);
             func_800BA450(spA0, 0x64, -0x64, 0x32, 0xAF, -0xC8, 0x64);
             func_800BABB8(spA0, spB0, NULL, 1.0f, &D_80801440_chdinofamilymother);
-            func_800BA22C(spA0, 6);
+            particleEmitter_emitN(spA0, 6);
             func_800BBCB8(spB0, NULL, 1.0f, 3, &D_80801404_chdinofamilymother);
             func_800C4140(0x4CAEA44B, spB0, 0x0BB80190);
         }
@@ -242,7 +242,7 @@ void func_8080096C_chdinofamilymother(Actor* arg0)
             _subaddieskeleton_entrypoint_0(arg0, 0x10, sp94);
             ml_vec3f_copy(sp88, sp94);
             sp88[1] -= 300.0f;
-            func_800BEF00(sp94, sp88, sp7C, 0);
+            mapModel_intersectLine(sp94, sp88, sp7C, 0);
             func_800BBCB8(sp88, NULL, 1.0f, 1, &D_80801404_chdinofamilymother);
             func_800C4140(0x4CAEA44B, sp88, 0x0BB80190);
         }
@@ -271,11 +271,11 @@ void func_8080096C_chdinofamilymother(Actor* arg0)
             _subaddieskeleton_entrypoint_0(arg0, 0x10, sp4C);
             ml_vec3f_copy(sp40, sp4C);
             sp40[1] -= 300.0f;
-            func_800BEF00(sp4C, sp40, sp34, 0);
+            mapModel_intersectLine(sp4C, sp40, sp34, 0);
             func_800BA930(sp30, 0x96, 0x96, 0x12C, 0xC8, 0xC8, 0x15E);
             func_800BA450(sp30, -0x32, -0x64, -0x64, -0x64, -0xC8, -0xAF);
             func_800BABB8(sp30, sp40, NULL, 1.0f, &D_80801440_chdinofamilymother);
-            func_800BA22C(sp30, 6);
+            particleEmitter_emitN(sp30, 6);
             func_800BBCB8(sp40, NULL, 1.0f, 1, &D_80801404_chdinofamilymother);
             func_800C4140(0x3FEDAC11, sp40, 0x0BB80190);
         }

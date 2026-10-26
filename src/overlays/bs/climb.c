@@ -29,7 +29,7 @@ void func_8080005C_bsclimb(PlayerState* self)
 	f32 temp;
 	sp28 = bastick_getY(self);
 
-	temp = mlAbsF(sp28) < 0.03f ? 0.0f : func_800F1344(sp28, 0.03f, 1.0f, 100.0f, 300.0f);
+	temp = mlAbsF(sp28) < 0.03f ? 0.0f : ml_mapAbsRange_f(sp28, 0.03f, 1.0f, 100.0f, 300.0f);
 	sp2C[0] = 0.0f;
 	sp2C[1] = temp;
 	sp2C[2] = 0.0f;

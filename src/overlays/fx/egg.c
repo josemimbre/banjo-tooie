@@ -22,7 +22,7 @@ void fxegg_entrypoint_0(s32 arg0, f32* arg1, f32 arg2)
     temp_v0 = func_80800000_fxegg(arg0);
     temp_v0 = func_8080009C_fxegg(temp_v0[1], temp_v0[2], arg1, arg2);
     func_800BA75C(temp_v0, arg1);
-    func_800BA22C(temp_v0, 5);
+    particleEmitter_emitN(temp_v0, 5);
 }
 
 s32 func_8080009C_fxegg(s32 arg0, s32 arg1, f32* arg2, f32 arg3)

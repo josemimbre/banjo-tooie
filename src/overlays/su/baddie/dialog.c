@@ -640,7 +640,7 @@ s32 subaddiedialog_entrypoint_16(void)
     {
         return 0;
     }
-    if (func_800C0638() != 0)
+    if (gcdialog_hasCurrentTextId() != 0)
     {
         return 0;
     }

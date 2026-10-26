@@ -442,7 +442,7 @@ void sumole_entrypoint_4(Actor* arg0, MoveData* arg1)
             MOLE_DATA(arg0)->unk18 -= time_getDelta();
             if (MOLE_DATA(arg0)->unk18 <= 0.0f)
             {
-                temp_a1 = func_800F10B4((f32)(func_8008FC00() + 1), 1.0f, 10.0f, 0.8f, 1.5f);
+                temp_a1 = ml_map_f((f32)(func_8008FC00() + 1), 1.0f, 10.0f, 0.8f, 1.5f);
                 MOLE_DATA(arg0)->unk18 = 0.2f;
                 func_800C3FC0(0x66C, temp_a1, 0x3E80);
                 func_8008FC50();

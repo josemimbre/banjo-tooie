@@ -23,7 +23,7 @@ f32 func_800BE600(f32 arg0[3], u32 arg1) {
     sp58[1] = arg0[1];
     sp58[2] = arg0[2];
     sp58[1] -= 2000.0f;
-    if (func_800BEF00(sp64, sp58, sp70, arg1)) {
+    if (mapModel_intersectLine(sp64, sp58, sp70, arg1)) {
         return sp58[1];
     }
     phi_s2 = 150;
@@ -41,7 +41,7 @@ f32 func_800BE600(f32 arg0[3], u32 arg1) {
         sp58[0] += rand_fBounded(-1.0f, 1.0f);
         sp58[1] -= (f32)phi_s1;
         sp58[2] += rand_fBounded(-1.0f, 1.0f);
-        if (func_800BEF00(&sp64, &sp58, &sp70, arg1)) {
+        if (mapModel_intersectLine(&sp64, &sp58, &sp70, arg1)) {
             return sp58[1];
         }
         phi_s1 += 2000;
@@ -110,7 +110,7 @@ void func_800BED50(f32 arg0[3])
 
 #pragma GLOBAL_ASM("asm/nonmatchings/core2/1E97EF0/func_800BEE40.s")
 
-#pragma GLOBAL_ASM("asm/nonmatchings/core2/1E97EF0/func_800BEF00.s")
+#pragma GLOBAL_ASM("asm/nonmatchings/core2/1E97EF0/mapModel_intersectLine.s")
 
 #pragma GLOBAL_ASM("asm/nonmatchings/core2/1E97EF0/func_800BF0E0.s")
 

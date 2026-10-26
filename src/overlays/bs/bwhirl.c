@@ -54,7 +54,7 @@ void func_80800114_bsbwhirl(PlayerState* self)
         baphysics_set_target_horizontal_velocity(self, 0.0f);
         return;
     }
-    baphysics_set_target_horizontal_velocity(self, func_800F1214(sp1C, 80.0f, 425.0f));
+    baphysics_set_target_horizontal_velocity(self, ml_interpolate_f(sp1C, 80.0f, 425.0f));
 }
 
 void func_8080017C_bsbwhirl(PlayerState* self)
@@ -113,7 +113,7 @@ void func_80800200_bsbwhirl(PlayerState* self)
     }
     self->unk170 = func_800136E4(self->unk170 + 45.0f);
     func_800BA930((unkStruct800BA198*)sp38, sp54[0], 0xFA, sp54[2], sp48[0], 0xFA, sp48[2]);
-    func_800BA22C(sp38, 2);
+    particleEmitter_emitN(sp38, 2);
 }
 
 s32 func_808003A8_bsbwhirl(PlayerState* self, s32 arg1) 

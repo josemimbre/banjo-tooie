@@ -11,7 +11,7 @@ s32 func_80800000_bsbanpackwhack(f32* arg0, f32 arg1) {
 
 void func_80800074_bsbanpackwhack(PlayerState * self, f32* arg1) {
     s32 tmp_v0 = func_80800000_bsbanpackwhack(arg1, yaw_get(self));
-    func_800BA22C(tmp_v0, 1);
+    particleEmitter_emitN(tmp_v0, 1);
 }
 
 void bsbanpackwhack_entrypoint_0(PlayerState *self) {
@@ -46,9 +46,9 @@ void bsbanpackwhack_entrypoint_2(PlayerState *self)
 
 
     if (player_isStable(self)) {
-        func_800F1574(&self->unk16C, func_800F0E00(self->unk16C * 0.08f, 3.0f));
+        ml_timer_update(&self->unk16C, ml_max_f(self->unk16C * 0.08f, 3.0f));
     } else {
-        func_800F1574(&self->unk16C, func_800F0E00(self->unk16C * 0.04f, 3.0f));
+        ml_timer_update(&self->unk16C, ml_max_f(self->unk16C * 0.04f, 3.0f));
     }
     baphysics_set_target_horizontal_velocity(self, self->unk16C);
 

@@ -175,7 +175,7 @@ void func_808003BC_chmrsicecube(Actor* arg0, void* arg1)
         {
             func_8010A764(temp_v0, arg1);
         }
-        func_800DF744(3, arg0->unk64_19);
+        modelRender_setAppendageVisibility(3, arg0->unk64_19);
         func_80101870(arg0, arg1);
     }
 }

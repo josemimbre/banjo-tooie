@@ -328,7 +328,7 @@ void func_800DAA8C(BitFieldBuffer* bitfield, s32 arg1, s32 length) {
     }
 }
 
-void func_800DAAF8(BitFieldBuffer* bitfield, s32 index, s32 set) {
+void bitfield_setBit(BitFieldBuffer* bitfield, s32 index, s32 set) {
     if (set) {
         bitfield->unk4[index >> 5] |= 1 << (index & 0x1F);
     }
@@ -344,7 +344,7 @@ s32 func_800DAB54(BitFieldBuffer* bitfield, s32 index) {
 void func_800DAB8C(BitFieldBuffer* bitfield, s32 set) {
     s32 i;
     for (i = 0; i < bitfield->num_bits; i++) {
-        func_800DAAF8(bitfield, i, set);
+        bitfield_setBit(bitfield, i, set);
     }
 }
 

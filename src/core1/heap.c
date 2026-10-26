@@ -185,7 +185,7 @@ void* heap_alloc_sided(s32 size, s32 alloc_side) {
     }
 
     // Align the allocation size and prevent 0-byte allocations
-    alloc_size = func_8001BD30(size > 0 ? size : 1);
+    alloc_size = __heap_align(size > 0 ? size : 1);
 
     // Try to find an empty block on the given side
     cur_block = find_free_block(size, alloc_side);
@@ -286,7 +286,7 @@ void heap_resize_block_internal(struct HeapHeader* block, s32 new_size) {
     // Determine how many bytes the block will be change size
     if (new_size > 0) {
         // Align the requested size to 0x10 bytes
-        size_delta = GET_BLOCK_MEM_SIZE(block) - func_8001BD30(new_size);
+        size_delta = GET_BLOCK_MEM_SIZE(block) - __heap_align(new_size);
     } else {
         // Minimum block size is 0x10 bytes
         size_delta = GET_BLOCK_MEM_SIZE(block) - 0x10;
@@ -376,7 +376,7 @@ void* heap_realloc(void* mem, s32 size) {
     GET_BLOCK_HEADER(new_mem)->unkC_29 = cur_block->unkC_29;
 
     // Copy the contents of the original block into the new one
-    aligned8_memcpy(new_mem, mem, func_8001BD30(size));
+    aligned8_memcpy(new_mem, mem, __heap_align(size));
 
     // Free and unpin the original block
     heap_free(mem);

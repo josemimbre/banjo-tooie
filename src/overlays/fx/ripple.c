@@ -63,7 +63,7 @@ void fxripple_entrypoint_0(s32 a0, f32* a1)
     temp_v0 = func_80800094_fxripple(a0, a1, 0);
     if (temp_v0 != 0)
     {
-        func_800BA22C(temp_v0, 1);
+        particleEmitter_emitN(temp_v0, 1);
     }
 }
 
@@ -73,7 +73,7 @@ void fxripple_entrypoint_1(s32 arg0, f32* arg1, s32 arg2)
     temp_v0 = func_80800094_fxripple(arg0, arg1, arg2);
     if (temp_v0 != 0)
     {
-        func_800BA22C(temp_v0, 1);
+        particleEmitter_emitN(temp_v0, 1);
     }
 }
 

@@ -443,14 +443,14 @@ void func_80800CD0_chhandcart(Actor* arg0)
     }
     if (HANDCART_DATA(arg0)->unkC > 10.0f)
     {
-        temp_f0_2 = func_800F10B4(1.0f - (HANDCART_DATA(arg0)->unkC / 90.0f), 0.0f, 1.f, 0.5f, 3.0f);
+        temp_f0_2 = ml_map_f(1.0f - (HANDCART_DATA(arg0)->unkC / 90.0f), 0.0f, 1.f, 0.5f, 3.0f);
         func_80101CDC(arg0, temp_f0_2);
         if (arg0->unk5F == 0)
         {
             arg0->unk5F = func_800C4350(arg0->unk5F, arg0->position, &D_80804DA4_chhandcart);
             return;
         }
-        func_800C31DC(arg0->unk5F, func_800F10B4(temp_f0_2, 0.5f, 3.0f, 1.2f, 0.8f));
+        func_800C31DC(arg0->unk5F, ml_map_f(temp_f0_2, 0.5f, 3.0f, 1.2f, 0.8f));
         func_800C4350(arg0->unk5F, arg0->position, 0);
         return;
     }
@@ -588,7 +588,7 @@ f32 func_8080115C_chhandcart(f32* arg0, f32 arg1)
         //If we're holding the button
         if (temp_v0 != 0)
         {
-            arg1 += func_800F10B4(temp_f12, -1.0f, -0.01f, 0.0f, 3.0f);
+            arg1 += ml_map_f(temp_f12, -1.0f, -0.01f, 0.0f, 3.0f);
             *arg0 = 0.01f;
             return arg1;
         }
@@ -604,7 +604,7 @@ f32 func_8080115C_chhandcart(f32* arg0, f32 arg1)
         //If we're not holding the button
         if (temp_v0 == 0)
         {
-            arg1 += func_800F10B4(temp_f12, 1.0f, 0.01f, 0.0f, 3.0f);
+            arg1 += ml_map_f(temp_f12, 1.0f, 0.01f, 0.0f, 3.0f);
             *arg0 = -0.01f;
             return arg1;
         }
@@ -731,7 +731,7 @@ f32 func_8080169C_chhandcart(Actor* arg0, u32 arg1, f32* arg2)
     ml_vec3f_copy(sp38, arg2);
     sp38[1] += 150.0f;
     arg2[1] -= 150.0f;
-    if (func_800BEF00(sp38, arg2, sp2C, 0x20020U) == 0)
+    if (mapModel_intersectLine(sp38, arg2, sp2C, 0x20020U) == 0)
     {
         arg2[1] = arg0->position[1];
     }
@@ -853,7 +853,7 @@ void func_80801BA4_chhandcart(Actor* arg0)
     temp_s1 = (HandcartMemory*)func_80100094(arg0, 0U);
     func_80105A9C(arg0, HANDCART_DATA(arg0)->unkC * 10.0f);
     func_80105834(arg0);
-    temp_s1->unk920 = func_800F10B4(HANDCART_DATA(arg0)->unkC, 0.0f, 100.0f, 0.0f, func_800F1DCC(arg0->rotation[1], temp_s1->unk8) * 3.0f);
+    temp_s1->unk920 = ml_map_f(HANDCART_DATA(arg0)->unkC, 0.0f, 100.0f, 0.0f, func_800F1DCC(arg0->rotation[1], temp_s1->unk8) * 3.0f);
     temp_s1->unk8 = (f32)arg0->rotation[1];
     if (temp_s1->unk8F7 == 0)
     {
@@ -1196,7 +1196,7 @@ void func_80802690_chhandcart(Actor* arg0)
     {
     case 0x7D:
         _subaddieaudioquick_entrypoint_3(arg0, arg0->position, &D_808046C0_chhandcart, 0.1f);
-        if (((f32)temp_v0->unk0 <= 0.0f) && (rand_percentChance(0.03f) != 0) && (func_800C0638() == 0))
+        if (((f32)temp_v0->unk0 <= 0.0f) && (rand_percentChance(0.03f) != 0) && (gcdialog_hasCurrentTextId() == 0))
         {
             _subaddieaudioquick_entrypoint_2(arg0, arg0->position, &D_808046D4_chhandcart);
             temp_v0->unk0 = 1.5f;
@@ -1625,7 +1625,7 @@ s32 func_80803448_chhandcart(Actor* arg0)
     sp38[1] = sp38[1] + 50.0f;
     ml_vec3f_copy(sp2C, arg0->position);
     sp2C[1] -= 50.0f;
-    if ((func_800BEF00(sp38, sp2C, sp20, 0x20020U) == 0) || sp2C[1] < arg0->position[1])
+    if ((mapModel_intersectLine(sp38, sp2C, sp20, 0x20020U) == 0) || sp2C[1] < arg0->position[1])
     {
         arg0->position[1] = (arg0->position[1] - (250.0f * gamespeed));
         return 0;
@@ -2101,11 +2101,11 @@ s32 func_80803FC4_chhandcart(Actor* arg0, s32 arg1, u32 arg2)
         func_801015D0(arg0);
         if ((arg0->unk70_10 == 0x18) || (arg0->unk70_10 == 0x19))
         {
-            func_800DF744(3, 1);
+            modelRender_setAppendageVisibility(3, 1);
         }
         else
         {
-            func_800DF744(3, 0);
+            modelRender_setAppendageVisibility(3, 0);
         }
         break;
     default:

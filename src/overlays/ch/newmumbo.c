@@ -245,19 +245,19 @@ s32 func_808004E8_chnewmumbo(Actor* arg0, s32 arg1, s32 arg2)
 			func_801015D0(arg0);
 			if (sp24->unk1 != 0)
 			{
-				func_800DF744(5, 1);
+				modelRender_setAppendageVisibility(5, 1);
 			}
 			else
 			{
-				func_800DF744(5, 0);
+				modelRender_setAppendageVisibility(5, 0);
 			}
 			if (sp24->unk2 != 0)
 			{
-				func_800DF744(4, 1);
+				modelRender_setAppendageVisibility(4, 1);
 			}
 			else
 			{
-				func_800DF744(4, 0);
+				modelRender_setAppendageVisibility(4, 0);
 			}
 			break;
 		default:
@@ -343,7 +343,7 @@ void func_8080092C_chnewmumbo(Actor* arg0)
 	f32 sp2C[3];
 
 	sp5C = (NewMumboStruct*)func_80100094(arg0, 0U);
-	if (func_800C0638() != 0)
+	if (gcdialog_hasCurrentTextId() != 0)
 	{
 		MUMBO_DATA(arg0)->unkC = 1.5f;
 	}

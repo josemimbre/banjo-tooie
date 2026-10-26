@@ -343,7 +343,7 @@ s32 func_808009A0_chmolehill(Actor* arg0, s32 arg1, s32 arg2)
         {
             var_a1 = 1;
         }
-        func_800DF744(3, var_a1);
+        modelRender_setAppendageVisibility(3, var_a1);
         break;
     default:
         return 0;

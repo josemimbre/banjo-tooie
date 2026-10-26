@@ -109,7 +109,7 @@ extern __OSThreadOddFpStorage D_80078E48;
 extern s32 D_80078F58;
 extern s32 D_80078F5C;
 
-void func_800140D8(GraphicsTask *arg0);
+void thread5_startGfxTask(GraphicsTask *arg0);
 void func_800146D8(void);
 
 void func_80013D10(OSMesg arg0){
@@ -192,7 +192,7 @@ void func_80013FE4(GraphicsTask * arg0){
     }
 }
 
-void func_800140D8(GraphicsTask *arg0) {
+void thread5_startGfxTask(GraphicsTask *arg0) {
     switch(arg0->header.type){
         case TASK_TYPE_GFX_3D:
             func_80013EF0(arg0);
@@ -246,7 +246,7 @@ void func_800142F0(void) {
     D_80078484 = D_80078488 = 2;
     D_80078F10 = 0;
     if(D_8007848C == 0x10 && D_80078EAC != D_80078EA8 && !D_80078480){
-        func_800140D8(D_80078E58[D_80078EAC]);
+        thread5_startGfxTask(D_80078E58[D_80078EAC]);
         D_80078EAC = (D_80078EAC + 1) % ARRLEN(D_80078E58);
     }
     else{
@@ -348,7 +348,7 @@ void func_800146D8(void) {
 
     D_8007848C = 0x10;
     if ((D_80078EAC != D_80078EA8) && (D_80078480 == 0)) {
-        func_800140D8(D_80078E58[D_80078EAC]);
+        thread5_startGfxTask(D_80078E58[D_80078EAC]);
         D_80078EAC = (D_80078EAC + 1) % ARRLEN(D_80078E58);
         return;
     }

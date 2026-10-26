@@ -590,7 +590,7 @@ s32 func_800C9714(s32 arg0) {
     return 1;
 }
 
-unkStruct800C9750* func_800C9750(f32 arg0, s32 arg1, u32* arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7) {
+unkStruct800C9750* __timedFuncQueue_insert(f32 arg0, s32 arg1, u32* arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7) {
     unkStruct800C9750* sp24;
     Vector* var_a0;
     unkStruct800C9750* temp_v0_2;
@@ -723,7 +723,7 @@ void func_800C9B84(void) {
 }
 
 void func_800C9BB4(f32 arg0, s32 arg1, f32 arg2, s32 arg3) {
-    func_800C9E64(arg0, (u32*)func_800C99B4, arg1, arg2 * 1000.0f, arg3);
+    timedFunc_set_3(arg0, (u32*)func_800C99B4, arg1, arg2 * 1000.0f, arg3);
 }
 
 void func_800C9C04(f32 arg0, u32 arg1, u32 arg2) {
@@ -731,7 +731,7 @@ void func_800C9C04(f32 arg0, u32 arg1, u32 arg2) {
 }
 
 void func_800C9C34(f32 arg0, s32 arg1, s32 arg2, s32 arg3) {
-    func_800C9E64(arg0, (u32*)func_800C9994, arg1, arg2, arg3);
+    timedFunc_set_3(arg0, (u32*)func_800C9994, arg1, arg2, arg3);
 }
 
 
@@ -775,36 +775,36 @@ void func_800C9D88(f32 arg0) {
 }
 
 void func_800C9DAC(f32 arg0, u32* arg1) {
-    func_800C9750(arg0, 0, arg1, 0, 0, 0, 0, 0);
+    __timedFuncQueue_insert(arg0, 0, arg1, 0, 0, 0, 0, 0);
 }
 
 void func_800C9DE4(f32 arg0, u32* arg1, s32 arg2) {
-    func_800C9750(arg0, 1, arg1, arg2, 0, 0, 0, 0);
+    __timedFuncQueue_insert(arg0, 1, arg1, arg2, 0, 0, 0, 0);
 }
 
 void func_800C9E20(f32 arg0, u32* arg1, u32 arg2, u32 arg3) {
-    func_800C9750(arg0, 2, arg1, arg2, arg3, 0, 0, 0);
+    __timedFuncQueue_insert(arg0, 2, arg1, arg2, arg3, 0, 0, 0);
 }
 
-void func_800C9E64(f32 arg0, u32* arg1, s32 arg2, s32 arg3, s32 arg4) {
-    func_800C9750(arg0, 3, arg1, arg2, arg3, arg4, 0, 0);
+void timedFunc_set_3(f32 arg0, u32* arg1, s32 arg2, s32 arg3, s32 arg4) {
+    __timedFuncQueue_insert(arg0, 3, arg1, arg2, arg3, arg4, 0, 0);
 }
 
 
 void func_800C9EAC(f32 arg0, u32* arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
-    func_800C9750(arg0, 4, arg1, arg2, arg3, arg4, arg5, 0);
+    __timedFuncQueue_insert(arg0, 4, arg1, arg2, arg3, arg4, arg5, 0);
 }
 
 
 void func_800C9EF8(f32 arg0, u32* arg1, void* arg2) {
-    rare_memcpy(func_800C9750(arg0, 6, arg1, 0, 0, 0, 0, 0)->unk20, arg2, 0x50);
+    rare_memcpy(__timedFuncQueue_insert(arg0, 6, arg1, 0, 0, 0, 0, 0)->unk20, arg2, 0x50);
 }
 
 void func_800C9F48(f32 arg0, unkStruct800C9B30* arg1, s32 arg2) {
     unkStruct800C9B30** new_var;
 
     new_var = &arg1;
-    func_800C9750(arg0, 3, (u32*)func_800C9B30, *new_var, (u32)(*new_var)->unk12 >> 1, arg2, 0, 0);
+    __timedFuncQueue_insert(arg0, 3, (u32*)func_800C9B30, *new_var, (u32)(*new_var)->unk12 >> 1, arg2, 0, 0);
 }
 
 s32 func_800C9F94(void) {

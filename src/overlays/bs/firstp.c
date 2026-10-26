@@ -218,10 +218,10 @@ void func_8080056C_bsfirstp(PlayerState* arg0)
 	sp38 = func_80806170_bsfirstp(arg0, temp);
 	sp34 = func_800F1CF0(temp_s0->unk38, temp_s0->unk2C);
 	sp30 = sqrtf(1.0f - SQ(sp34));
-	temp_s0->unk44[0] = func_800F0DC0(sp38 * sp34, 1.0f);
-	temp_s0->unk44[1] = func_800F0DC0(sp38 * sp30, 1.0f);
+	temp_s0->unk44[0] = ml_clamp_abs_f(sp38 * sp34, 1.0f);
+	temp_s0->unk44[1] = ml_clamp_abs_f(sp38 * sp30, 1.0f);
 	temp = func_80809938_bsfirstp(arg0);
-	temp = func_800F0DC0(temp, 1.0f);
+	temp = ml_clamp_abs_f(temp, 1.0f);
 	temp_s0->unk44[2] += (temp - temp_s0->unk44[2]) * 0.2f;
 }
 

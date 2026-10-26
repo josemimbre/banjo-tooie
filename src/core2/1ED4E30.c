@@ -31,7 +31,7 @@ void func_800FB5BC(unkStruct800FB540* arg0) {
     }
 }
 
-#pragma GLOBAL_ASM("asm/nonmatchings/core2/1ED4E30/func_800FB5F8.s")
+#pragma GLOBAL_ASM("asm/nonmatchings/core2/1ED4E30/comusic_findTrack.s")
 
 #pragma GLOBAL_ASM("asm/nonmatchings/core2/1ED4E30/func_800FB650.s")
 
@@ -112,7 +112,7 @@ void func_800FC1A8()
 
 #pragma GLOBAL_ASM("asm/nonmatchings/core2/1ED4E30/func_800FCB9C.s")
 
-#pragma GLOBAL_ASM("asm/nonmatchings/core2/1ED4E30/func_800FCCD4.s")
+#pragma GLOBAL_ASM("asm/nonmatchings/core2/1ED4E30/comusic_isTrackQueued.s")
 
 #pragma GLOBAL_ASM("asm/nonmatchings/core2/1ED4E30/func_800FCD14.s")
 

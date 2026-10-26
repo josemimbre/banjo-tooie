@@ -193,10 +193,10 @@ void func_808003F4_chstonepillar(Actor* arg0, s32 arg1)
 
     for (s0 = 0; s0 < 5; s0++)
     {
-        func_800DF744(s0 + 1, 0);
+        modelRender_setAppendageVisibility(s0 + 1, 0);
     }
     sp28 = (StonePillarStruct*)func_80100094(arg0, 0U);
-    func_800DF744(sp28->unk2E + 1, 1);
+    modelRender_setAppendageVisibility(sp28->unk2E + 1, 1);
     func_80101808(arg0, func_801015D0);
 }
 

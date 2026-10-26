@@ -33,7 +33,7 @@ void func_80800064_bsblongleg(PlayerState* self)
         baphysics_set_target_horizontal_velocity(self, 0.0f);
         return;
     }
-    baphysics_set_target_horizontal_velocity(self, func_800F1214(sp1C, 80.0f, 500.0f));
+    baphysics_set_target_horizontal_velocity(self, ml_interpolate_f(sp1C, 80.0f, 500.0f));
 }
 
 void func_808000C8_bsblongleg(PlayerState* self)
@@ -118,8 +118,8 @@ void bsblongleg_entrypoint_0(PlayerState* self)
 
     temp_v0 = func_800C2E04();
     self->unk160.bytes[0] = temp_v0;
-    func_800C301C(temp_v0, 0x41D);
-    func_800C330C(self->unk160.bytes[0], 3);
+    sfxsource_setSfxId(temp_v0, 0x41D);
+    sfxSource_setunk43_7ByIndex(self->unk160.bytes[0], 3);
     func_800C3730(self->unk160.bytes[0], 0.8f, 1.9f, 1.2f);
     baflag_clear(self, BA_FLAG_E_TOUCHING_WADING_BOOTS);
     if (func_8009CA70(self, bs_getPreviousState(self), 0x40)) {
@@ -163,7 +163,7 @@ void bsblongleg_entrypoint_1(PlayerState* self)
 void bsblongleg_entrypoint_2(PlayerState* self)
 {
     func_80800204_bsblongleg(self);
-    func_800C2FDC(self->unk160.bytes[0]);
+    sfxsource_freeSfxsourceByIndex(self->unk160.bytes[0]);
 }
 
 s32 bsblongleg_entrypoint_3(s32 arg0)
@@ -335,8 +335,8 @@ void bsblongleg_entrypoint_12(PlayerState* self)
     baphysics_set_target_horizontal_velocity(self, 0.0f);
     temp_v0 = func_800C2E04();
     self->unk160.bytes[0] = temp_v0;
-    func_800C301C(temp_v0, 0x41D);
-    func_800C330C(self->unk160.bytes[0], 3);
+    sfxsource_setSfxId(temp_v0, 0x41D);
+    sfxSource_setunk43_7ByIndex(self->unk160.bytes[0], 3);
     func_800C3730(self->unk160.bytes[0], 1.4f, 0.4f, -1.2f);
 }
 
@@ -370,7 +370,7 @@ void bsblongleg_entrypoint_13(PlayerState* self) {
 }
 
 void bsblongleg_entrypoint_14(PlayerState* self) {
-    func_800C2FDC(self->unk160.bytes[0]);
+    sfxsource_freeSfxsourceByIndex(self->unk160.bytes[0]);
     func_80800204_bsblongleg(self);
 }
 
@@ -444,7 +444,7 @@ void bsblongleg_entrypoint_17(PlayerState* self) {
             }
             break;
         case 2:
-            func_8008B10C(anim_ctrl, func_800F10B4(temp_f2, self->unk170, 1.0f, self->unk16C, 0.6703f));
+            func_8008B10C(anim_ctrl, ml_map_f(temp_f2, self->unk170, 1.0f, self->unk16C, 0.6703f));
             func_8009D2F0(self, 1, 0.5f);
             if (player_isStable(self) != 0) {
                 func_8009FE58(self);
@@ -522,7 +522,7 @@ void bsblongleg_entrypoint_21(PlayerState* self)
         func_800963C0(self, sp34);
         func_800F1EA4(sp34, &sp44);
         func_8009D2F0(self, 1, 0.5f);
-        baphysics_set_target_horizontal_velocity(self, func_800F10B4(func_8009BFD8(self), 20.0f, 60.0f, 550.0f, 700.0f));
+        baphysics_set_target_horizontal_velocity(self, ml_map_f(func_8009BFD8(self), 20.0f, 60.0f, 550.0f, 700.0f));
         baphysics_set_target_yaw(self, sp44);
         _badust_entrypoint_1(self);
     } else {

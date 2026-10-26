@@ -15,7 +15,7 @@ void fxtwinkle_entrypoint_1(f32* arg0, AssetId arg1)
     temp_v0 = func_800B53A4(1);
     func_800BABB8(temp_v0, arg0, NULL, 1.0f, &D_808000F0_fxtwinkle);
     func_800BA3FC(temp_v0, (s16)arg1);
-    func_800BA22C(temp_v0, 1);
+    particleEmitter_emitN(temp_v0, 1);
 }
 
 void fxtwinkle_entrypoint_2(f32* arg0, AssetId arg1)
@@ -25,5 +25,5 @@ void fxtwinkle_entrypoint_2(f32* arg0, AssetId arg1)
     temp_v0 = func_800B53A4(1);
     func_800BABB8(temp_v0, arg0, NULL, 1.0f, &D_8080010C_fxtwinkle);
     func_800BA3FC(temp_v0, (s16)arg1);
-    func_800BA22C(temp_v0, 1);
+    particleEmitter_emitN(temp_v0, 1);
 }

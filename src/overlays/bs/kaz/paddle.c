@@ -40,7 +40,7 @@ void func_80800100_bskazpaddle(PlayerState *self) {
         baphysics_set_target_horizontal_velocity(self, 0);
         return;
     }
-    baphysics_set_target_horizontal_velocity(self, func_800F1214(sp1C, 30, 350));
+    baphysics_set_target_horizontal_velocity(self, ml_interpolate_f(sp1C, 30, 350));
 }
 
 void func_80800164_bskazpaddle(PlayerState *self) {
@@ -65,7 +65,7 @@ void func_80800190_bskazpaddle(PlayerState *self) {
     anctrl_setDuration(animCtrl, 1.2);
     anctrl_setStart(animCtrl, 0.6412);
     anctrl_start(animCtrl);
-    self->unk16C = func_800F10B4(sp28, 40, 1000, -300, -1200.0f);
+    self->unk16C = ml_map_f(sp28, 40, 1000, -300, -1200.0f);
     baphysics_set_vertical_velocity(self, self->unk16C);
     func_8009FFD8(self, 1, 3, 3, 6);
 }
@@ -80,9 +80,9 @@ void func_808002A0_bskazpaddle(PlayerState *self) {
     sp40[1] = sp40[1] + 60.0f;
     sp3C = func_8009FBB0(self, sp40, 20);
     func_800BA930(sp3C, -30, -30, -30, 30, 30, 30);
-    func_800BA22C(sp3C, 1);
+    particleEmitter_emitN(sp3C, 1);
     if (self->unk16C < 0.0f) {
-        self->unk16C += func_800F0E00(mlAbsF(self->unk16C) * 0.1f, 50);
+        self->unk16C += ml_max_f(mlAbsF(self->unk16C) * 0.1f, 50);
         baphysics_set_vertical_velocity(self, self->unk16C);
     }
     if (player_isStable(self) != 0) {
@@ -106,7 +106,7 @@ void func_808003F4_bskazpaddle(PlayerState *self, f32 arg1[3]) {
 
     sp2C = func_8009FBB0(self, arg1, 40);
     func_800BA930(sp2C, 0, 100, 0, 0, 100, 0);
-    func_800BA22C(sp2C, 1);
+    particleEmitter_emitN(sp2C, 1);
 }
 
 void func_80800448_bskazpaddle(PlayerState *self) {

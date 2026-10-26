@@ -32,7 +32,7 @@ void func_80800000_chsecreteggs(Actor* arg0)
         func_800BA3FC(temp_v0, ASSET_9E2_GOLD_SPARKLE);
         break;
     }
-    func_800BA22C(temp_v0, 0x14);
+    particleEmitter_emitN(temp_v0, 0x14);
 }
 
 void func_808000C0_chsecreteggs(Actor* arg0)
@@ -120,10 +120,10 @@ s32 func_80800328_chsecreteggs(Actor* arg0, s32 arg1, s32 arg2)
             switch (D_80800494_chsecreteggs[arg0->unk70_10].unk0)
             {
             case 0x1D4:
-                func_800DF744(1, 1);
+                modelRender_setAppendageVisibility(1, 1);
                 break;
             case 0x1D5:
-                func_800DF744(1, 2);
+                modelRender_setAppendageVisibility(1, 2);
                 break;
             }
             return 1;

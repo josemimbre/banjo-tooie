@@ -4,7 +4,7 @@
 extern s16 D_8006A1CE;
 extern void* D_80076958;
 extern s32 D_8003CC70;
-extern void* D_80076978;
+extern void* sPiManagerData;
 extern OSMesgQueue D_800769B8;
 extern s32 D_8003CC64;
 extern s16 D_8006A1CC;
@@ -95,8 +95,8 @@ void func_8001311C(void* arg0, u32 arg1) {
 
 void func_800131C0(void) {
     osCreateMesgQueue((OSMesgQueue* ) &D_8007695C, &D_80076958, 1);
-    osCreateMesgQueue(&D_800769B8, &D_80076978, 0x10);
-    osCreatePiManager(0x96, &D_800769B8, &D_80076978, 0x10);
+    osCreateMesgQueue(&D_800769B8, &sPiManagerData, 0x10);
+    osCreatePiManager(0x96, &D_800769B8, &sPiManagerData, 0x10);
 }
 
 #pragma GLOBAL_ASM("asm/nonmatchings/core1/1E2A0E0/func_80013224.s")

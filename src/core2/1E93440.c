@@ -17,7 +17,7 @@ s32 func_800BA198(unkStruct800BA198* arg0) {
 
 #pragma GLOBAL_ASM("asm/nonmatchings/core2/1E93440/func_800BA1D0.s")
 
-#pragma GLOBAL_ASM("asm/nonmatchings/core2/1E93440/func_800BA22C.s")
+#pragma GLOBAL_ASM("asm/nonmatchings/core2/1E93440/particleEmitter_emitN.s")
 
 int func_800BA28C(unkStruct800BA198* arg0) {
     return (arg0->unk90 - arg0->unk8C) / 60 == 0 && arg0->unk7 == 2;
@@ -191,7 +191,7 @@ s32 func_800BBCB8(f32* arg0, f32* arg1, f32 arg2, s32 arg3, s32* arg4)
 
     temp_v0 = func_800B53A4(arg3);
     func_800BABB8(temp_v0, arg0, arg1, arg2, arg4);
-    func_800BA22C(temp_v0, arg3);
+    particleEmitter_emitN(temp_v0, arg3);
     return temp_v0;
 }
 

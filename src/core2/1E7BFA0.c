@@ -305,7 +305,7 @@ void func_800A3644(PlayerState* self)
     }
     else
     {
-        sp3C = func_800F10B4(sp38, 20.0f, 60.0f, 0.6f, D_80125564);
+        sp3C = ml_map_f(sp38, 20.0f, 60.0f, 0.6f, D_80125564);
         if ((func_80096518(self) == 0) && !(sp30 & 0x50))
         {
             sp2C = func_80096434(self);
@@ -316,7 +316,7 @@ void func_800A3644(PlayerState* self)
         }
         if ((sp30 & 0x50) && (player_inWater(self) == 0))
         {
-            self->unkA0->unk38 = func_800F13F0(self->unkA0->unk38 + (sp34 * sp3C), 1.0f);
+            self->unkA0->unk38 = ml_min_f(self->unkA0->unk38 + (sp34 * sp3C), 1.0f);
         }
         else
         {

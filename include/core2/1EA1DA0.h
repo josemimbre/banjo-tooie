@@ -133,7 +133,7 @@ s32 func_800C954C();
 s32 func_800C95D4();
 s32 func_800C964C(s32);
 void func_800C968C(s32, s32);
-unkStruct800C9750* func_800C9750(f32, s32, u32*, s32, s32, s32, s32, s32);
+unkStruct800C9750* __timedFuncQueue_insert(f32, s32, u32*, s32, s32, s32, s32, s32);
 void func_800C986C(unkStruct800C9750*);
 void func_800C9974(u32, u32);
 void func_800C9994(u32, u32, u32);
@@ -148,7 +148,7 @@ void func_800C9DAC(f32, u32*);
 void func_800C9DE4(f32, u32*, s32);
 //Set a timer to execute the callback
 void func_800C9E20(f32 timerLength, u32* callback, u32 callbackArg0, u32 callbackArg1);
-void func_800C9E64(f32, u32*, s32, s32, s32);
+void timedFunc_set_3(f32, u32*, s32, s32, s32);
 void func_800C9EF8(f32, u32*, void*);
 void func_800CA0A8();
 extern u8 D_8012AB54;

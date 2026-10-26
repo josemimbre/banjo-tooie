@@ -449,7 +449,7 @@ f32 func_80800F10_chclockworkmouse(f32* arg0, f32 arg1) {
     temp_v0 = func_80016B30(0, 0);
     if (*arg0 < 0.0f) {
         if (temp_v0 != 0) {
-            arg1 += func_800F10B4(*arg0, -1.0f, -0.01f, 0.0f, 3.0f);
+            arg1 += ml_map_f(*arg0, -1.0f, -0.01f, 0.0f, 3.0f);
             *arg0 = 0.01f;
             return arg1;
         }
@@ -457,7 +457,7 @@ f32 func_80800F10_chclockworkmouse(f32* arg0, f32 arg1) {
         arg1 *= 0.98f;
     } else {
         if (temp_v0 == 0) {
-            arg1 += func_800F10B4(*arg0, 1.0f, 0.01f, 0.0f, 3.0f);
+            arg1 += ml_map_f(*arg0, 1.0f, 0.01f, 0.0f, 3.0f);
             *arg0 = -0.01f;
             return arg1;
         }
@@ -476,12 +476,12 @@ void func_80801044_chclockworkmouse(Actor* actor) {
     f32 temp_f12;
 
     if (CLOCKWORK_DATA(actor)->unkC > 10.0f) {
-        temp_f12 = func_800F10B4(1.0f - (CLOCKWORK_DATA(actor)->unkC / 200.0f), 0.0f, 1, 0.5f, 3.0f);
+        temp_f12 = ml_map_f(1.0f - (CLOCKWORK_DATA(actor)->unkC / 200.0f), 0.0f, 1, 0.5f, 3.0f);
         if (actor->unk5F == 0) {
             actor->unk5F = func_800C4350(actor->unk5F, actor->position, (s32 *)D_80803E28_chclockworkmouse);
             return;
         }
-        func_800C31DC(actor->unk5F, func_800F10B4(temp_f12, 0.5f, 3.0f, 1.2f, 0.8f));
+        func_800C31DC(actor->unk5F, ml_map_f(temp_f12, 0.5f, 3.0f, 1.2f, 0.8f));
         func_800C4350(actor->unk5F, actor->position, NULL);
     }
 }
@@ -495,7 +495,7 @@ void func_8080111C_chclockworkmouse(Actor* actor) {
     func_80105A9C(actor, CLOCKWORK_DATA(actor)->unkC * 10.0f);
     func_80105834(actor);
     temp_s1->unkD8 = (((func_800F1DCC(actor->rotation[1], temp_s1->unkD4) * 10.0f) - temp_s1->unkD8) * 0.02f);
-    actor->rotation[2] = func_800F10B4(CLOCKWORK_DATA(actor)->unkC, 0.0f, 500.0f, 0.0f, temp_s1->unkD8);
+    actor->rotation[2] = ml_map_f(CLOCKWORK_DATA(actor)->unkC, 0.0f, 500.0f, 0.0f, temp_s1->unkD8);
     temp_s1->unkD4 = actor->rotation[1];
     if (temp_s1->unkFD == 0) {
         sp28 = 1.0f;
@@ -807,7 +807,7 @@ void func_80801E2C_chclockworkmouse(Actor* actor) {
     switch (func_801022E4(actor)) {
     case 0x7D:
         _subaddieaudioquick_entrypoint_3(actor, actor->position, (u32 *)&D_80803964_chclockworkmouse, 0.1f);
-        if ((sp2C->unk0.f <= 0.0f) && (rand_percentChance(0.03f) != 0) && (func_800C0638() == 0)) {
+        if ((sp2C->unk0.f <= 0.0f) && (rand_percentChance(0.03f) != 0) && (gcdialog_hasCurrentTextId() == 0)) {
             _subaddieaudioquick_entrypoint_2(actor, actor->position, &D_80803950_chclockworkmouse);
             sp2C->unk0.f = 1.5f;
             return;
@@ -1123,7 +1123,7 @@ s32 func_8080297C_chclockworkmouse(Actor* actor) {
     sp38[1] += 50.0f;
     ml_vec3f_copy(sp2C, actor->position);
     sp2C[1] -= 50.0f;
-    if (func_800BEF00(sp38, sp2C, sp20, 0x20020) == 0 || sp2C[1] < actor->position[1]) {
+    if (mapModel_intersectLine(sp38, sp2C, sp20, 0x20020) == 0 || sp2C[1] < actor->position[1]) {
         actor->position[1] -= 250.0f * sp1C;
         return 0;
     }
@@ -1430,7 +1430,7 @@ s32 func_808032F8_chclockworkmouse(Actor* actor, s32 arg1, s32 arg2) {
         return 3;
     case 31:
         func_801015D0(actor);
-        func_800DF744(3, 0);
+        modelRender_setAppendageVisibility(3, 0);
         break;
     default:
         return 0;
