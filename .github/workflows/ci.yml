@@ -1,10 +1,20 @@
 name: Build
 
-# Build on every branch push, tag push, and pull request change:
+# Build on pushes to master, or by hand (workflow_dispatch). There is no pull
+# request trigger: the build needs the base ROM secret, which must never be
+# given to PR code.
 on:
   push:
     branches: [master]
   workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Cancel an older run of the same branch or PR when a newer one starts.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build_repo:
@@ -16,29 +26,34 @@ jobs:
       matrix:
         version: [us]
 
+    env:
+      VERSION: ${{ matrix.version }}
+
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
         with:
           submodules: recursive
+          persist-credentials: false
 
       - name: Install package requirements
         run: sudo apt-get install -y make git build-essential binutils-mips-linux-gnu gcc-mips-linux-gnu python3 python3-pip libfmt-dev libtoml11-dev
 
       - name: Install Python dependencies
         run: pip3 install -r tools/requirements.txt
-        
+
       - name: Install Splat dependencies
         run: pip3 install -r tools/splat/requirements.txt
 
       - name: Get extra dependencies
-        uses: actions/checkout@v6
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
         with:
           repository: ${{ secrets.SECRETREPO }}
           token: ${{ secrets.SECRETTOKEN }}
           path: deps_repo
+          persist-credentials: false
       - name: Get the dependency
-        run: cp deps_repo/baserom.${{ matrix.version }}.z64 baserom.${{ matrix.version }}.z64
+        run: cp "deps_repo/baserom.$VERSION.z64" "baserom.$VERSION.z64"
 
       - name: Setup
         run: make setup -j $(nproc)
@@ -47,14 +62,16 @@ jobs:
         run: make -j $(nproc)
 
       - name: Print progress
-        run: python3 tools/progress.py --version ${{ matrix.version }}
+        run: python3 tools/progress.py --version "$VERSION"
 
       #- name: Upload frogress
-      #  if: ${{ github.ref == 'refs/heads/master' && github.event_name != 'pull_request_target' }}
-      #  run: python3 tools/upload_frogress.py ${{ matrix.version }} --apikey ${{ secrets.PROGRESS_API_KEY }}
+      #  if: ${{ github.ref == 'refs/heads/master' && github.event_name == 'push' }}
+      #  env:
+      #    PROGRESS_API_KEY: ${{ secrets.PROGRESS_API_KEY }}
+      #  run: python3 tools/upload_frogress.py "$VERSION" --apikey "$PROGRESS_API_KEY"
 
       - name: Upload map
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: banjotooie.${{ matrix.version }}.map
           path: build/${{ matrix.version }}/banjotooie_decompressed.map
